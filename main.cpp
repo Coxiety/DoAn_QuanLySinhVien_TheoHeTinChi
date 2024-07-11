@@ -77,7 +77,7 @@ int main()
                         break;
                     case LOP_TIN_CHI:
                         system("cls");
-                        cout << "Lop tin chi" << endl;
+                        cout << "Nhap Lop tin chi" << endl;
                         system("pause");
                         break;
                     case DANH_SACH_MON_HOC:
@@ -98,6 +98,6 @@ int main()
                 break;
         }
     }
-
+    //CCCCCCC
     return 0;
 }
