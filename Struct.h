@@ -1,7 +1,7 @@
 #include "mylib.h"
 
 struct MonHoc {
-	char MaMH[11]; char TenMH[51];
+	string MaMH; string TenMH;
 	int STCLT, STCTH;
 };
 struct nodeMonHoc {
@@ -12,7 +12,7 @@ struct nodeMonHoc {
 typedef nodeMonHoc *PTRMH;
 // dang ki LTC - lk don
 struct DangKy {
-	char MaSV[16];
+	string MaSV;
 	int TrangThai = 1;
 	float Diem;
 };
@@ -24,8 +24,8 @@ typedef nodeDangKy *PTRDK;
 // Danh sach LTC - danh sach tuyen tinh
 struct LopTinChi {
 	int MaLopTC;
-	char MaMH[11];
-	char NienKhoa[10];
+	string MaMH;
+	string NienKhoa;
 	int HocKy, Nhom, SoSVMin, SoSVMax;
 	int TrangThaiLTC = 1;
 	PTRDK FirstDK = NULL;
@@ -37,12 +37,12 @@ struct DSLTC {
 };
 // Danh sach SV - danh sach tuyen tinh
 struct SinhVien {
-	char MaSV[16];
-	char Ho[51];
-	char Ten[11];
-	char Phai[4];
-	char SoDT[15];
-	char MaLop[16];
+	string MaSV;
+	string Ho;
+	string Ten;
+	string Phai;
+	string SoDT;
+	string MaLop;
 };
 const int MaxSV = 5000;
 struct DSSV 
