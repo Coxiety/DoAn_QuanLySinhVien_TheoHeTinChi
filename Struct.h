@@ -1,5 +1,5 @@
 #include "mylib.h"
-
+#pragma once;
 struct MonHoc {
 	string MaMH; string TenMH;
 	int STCLT, STCTH;
