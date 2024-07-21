@@ -49,14 +49,6 @@ void moveByArrow(int& highlight, int& option, int& haveEntered, int menu_size)
 
 void SINHVIEN_menu(int& highlight, int option)
 {
-    enum option_SINHVIEN
-    {
-        THEM_SINH_VIEN = 0,
-        IN_DANH_SACH = 1,
-        SUA_THONG_TIN = 2,
-        XOA = 3,
-        THOAT = 4
-    };
     string option_menu_SINHVIEN[]
     {
         "1. Them sinh vien",
@@ -87,31 +79,31 @@ void SINHVIEN_menu(int& highlight, int option)
         cout << menu_size;
         switch (option) 
         {
-            case THEM_SINH_VIEN: // Them sinh vien
+            case 0: // Them sinh vien
                 system("cls");
                 cout << "Them sinh vien" << endl;
                 nhapSinhVien(DanhSach_SinhVien);
                 system("pause");
                 break;
-            case IN_DANH_SACH:
+            case 1:
                 system("cls");
                 cout << "In Danh Sach Sinh Vien \n";
                 inDanhSachSinhVien(DanhSach_SinhVien);
                 system("pause");
                 break;
-            case SUA_THONG_TIN: // Sua thong tin sinh vien
+            case 2: // Sua thong tin sinh vien
                 system("cls");
                 cout << "Sua thong tin sinh vien" << endl;
                 suaThongTin_SinhVien(DanhSach_SinhVien);    
                 system("pause");
                 break;
-            case XOA: // Xoa sinh vien
+            case 3: // Xoa sinh vien
                 system("cls");
                 cout << "Xoa sinh vien" << endl;
                 system("pause");
                 break;
 
-            case THOAT:
+            case 4:
                 return;
             default: return;
         }
@@ -120,15 +112,6 @@ void SINHVIEN_menu(int& highlight, int option)
 
 void main_menu(int& highlight, int option) 
 {
-    enum MENU_OPTIONS 
-    {
-        DANH_SACH_SINH_VIEN = 0,
-        LOP_TIN_CHI = 1,
-        DANH_SACH_MON_HOC = 2,
-        NHAP_DIEM_MON_HOC = 3,
-        KET_THUC = 4
-    };
-
     string mainMenuItems[]
     {
         "1. Danh sach sinh vien",
@@ -151,27 +134,27 @@ void main_menu(int& highlight, int option)
         }
         switch (option) 
         {
-            case DANH_SACH_SINH_VIEN:
+            case 0:
                 system("cls");
                 cout << "Danh sach sinh vien" << endl;
                 SINHVIEN_menu(highlight, option);
                 break;
-            case LOP_TIN_CHI:
+            case 1:
                 system("cls");
                 cout << "Nhap Lop tin chi" << endl;
                 system("pause");
                 break;
-            case DANH_SACH_MON_HOC:
+            case 2:
                 system("cls");
                 cout << "Danh sach Mon Hoc" << endl;
                 system("pause");
                 break;
-            case NHAP_DIEM_MON_HOC:
+            case 3:
                 system("cls");
                 cout << "Nhap diem cho mon hoc" << endl;
                 system("pause");
                 break;
-            case KET_THUC:
+            case 4:
                 return;
             default: return;
         }
@@ -182,8 +165,8 @@ int main()
 {
     int option = 0;
     int highlight = 0;
-
-    main_menu(highlight, option); // Gọi hàm main_menu tại đây
+    docList_SinhVien("list_SinhVien.txt", DanhSach_SinhVien);
+    main_menu(highlight, option); // Ham Main menu
 
     return 0;
 }

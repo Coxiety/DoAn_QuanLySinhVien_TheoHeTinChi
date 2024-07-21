@@ -1,5 +1,3 @@
-#include "Struct.h"
-#pragma once; 
 bool compareSinhVien(const SinhVien &a, const SinhVien &b) /*Ham Dung De so sanh Ten va Ho, so sanh thong tin cua 
 sinh vien A va B*/
 {
@@ -12,7 +10,7 @@ sinh vien A va B*/
 
 void sort_SinhVien(DSSV &DanhSach)//Sort su dung bubble sort
 {
-    for (int i = 0; i < DanhSach.n - 1; ++i) 
+    for (int i = 0; i < DanhSach.n - 1; ++i)
     {
         for (int j = i + 1; j < DanhSach.n - i - 1; ++j) 
         {
@@ -25,12 +23,90 @@ void sort_SinhVien(DSSV &DanhSach)//Sort su dung bubble sort
         }
     }
 }
+
+bool check_TrungMaSV(DSSV &DanhSach, const string &maSV)
+{
+    for (int i = 0; i < DanhSach.n; ++i)
+    {
+        if (DanhSach.nodes[i].MaSV == maSV)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+//Doc thong tin SV tu File
+void docList_SinhVien(const string& tenFile, DSSV &DanhSach)
+{
+    ifstream file(tenFile);
+    if (!file.is_open())
+    {
+        cout << "Khong the mo file " << tenFile << endl;
+        return;
+    }
+
+    while (!file.eof())
+    {
+        SinhVien sv;
+        string line;
+
+        // Doc thong tin MaLop & MaSV & Ho tren mot dong 
+        getline(file, line);
+        istringstream iss(line);
+        iss >> sv.MaLop >> sv.MaSV >> sv.Ho;
+
+        // Doc ten tren mot dong
+        getline(file, sv.Ten);
+
+        // Doc gioi tinh
+        getline(file, line);
+        istringstream iss2(line);
+        iss2 >> sv.Phai >> sv.SoDT;
+
+        // Lay khoan trong trong file
+        getline(file, line);
+        if (DanhSach.n < MaxSV)
+        {
+            DanhSach.nodes[DanhSach.n++] = sv;
+        }
+        else
+        {
+            cout << "Danh sach sinh vien da day.\n";
+            break;
+        }
+    }
+
+    file.close();
+    sort_SinhVien(DanhSach);
+}
+
+//ghi Thong Tin Vao File
+void ghiThongTinVaoFile(const string& tenFile, const DSSV& DanhSach)
+{
+    ofstream file(tenFile);
+    if (!file.is_open())
+    {
+        cout << "Khong the mo file " << tenFile << endl;
+        return;
+    }
+
+    for (int i = 0; i < DanhSach.n; ++i)
+    {
+        file << DanhSach.nodes[i].MaLop << " " << DanhSach.nodes[i].MaSV << endl;
+        file << DanhSach.nodes[i].Ho << endl;
+        file << DanhSach.nodes[i].Ten << endl;
+        file << DanhSach.nodes[i].Phai << endl;
+        file << DanhSach.nodes[i].SoDT << endl;
+    }
+
+    file.close();
+}
+
 void nhapSinhVien(DSSV &DanhSach)
 {   
     SinhVien sv;
     while(true)
     {
-
         cout << "Nhap Ma Lop: ";
         cin >> sv.MaLop;
         cin.ignore();
@@ -39,6 +115,11 @@ void nhapSinhVien(DSSV &DanhSach)
         if (sv.MaSV.empty())
         {
             break;
+        }
+        if (check_TrungMaSV(DanhSach, sv.MaSV) == true)
+        {
+            cout << "Da Trung Ma Sinh Vien\n";
+            continue;
         }
         cout << "Nhap ho: ";
         cin >> sv.Ho;
@@ -67,8 +148,6 @@ void nhapSinhVien(DSSV &DanhSach)
 void suaThongTin_SinhVien(DSSV &DanhSach)
 {
     string MSSV;
-    // cout << "Nhap ma lop: ";
-    // getline(cin, maLop);
     cout << "Nhap MSSV: ";
     getline(cin, MSSV);
     for(int i = 0; i < DanhSach.n; i++)
@@ -89,7 +168,11 @@ void suaThongTin_SinhVien(DSSV &DanhSach)
             string newMaSV;
             getline(cin, newMaSV);
             if (!newMaSV.empty()) sv.MaSV = newMaSV;
-
+            if (check_TrungMaSV(DanhSach, newMaSV) == true)
+            {
+                cout << "Trung ma voi sinh vien khac";
+                return;
+            }
             cout << "Nhap ho (" << sv.Ho << "): ";
             string newHo;
             getline(cin, newHo);
@@ -119,8 +202,10 @@ void suaThongTin_SinhVien(DSSV &DanhSach)
     }
 }
 
-void inDanhSachSinhVien(const DSSV &DanhSach) {
-    for (int i = 0; i < DanhSach.n; ++i) {
+void inDanhSachSinhVien(const DSSV &DanhSach) 
+{
+    for (int i = 0; i < DanhSach.n; ++i) 
+    {
         cout << "Sinh vien thu " << i + 1 << ":\n";
         cout << "MSSV: " << DanhSach.nodes[i].MaSV << endl;
         cout << "Ho: " << DanhSach.nodes[i].Ho << endl;

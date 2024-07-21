@@ -6,6 +6,8 @@
 #include <windows.h>
 #include <string>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #pragma once
 using namespace std;
 
