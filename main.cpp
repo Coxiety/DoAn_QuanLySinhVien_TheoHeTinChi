@@ -57,26 +57,16 @@ void SINHVIEN_menu(int& highlight, int option)
         "4. Xoa sinh vien",
         "5. Thoat chuc nang"
     };
-
-    cout << sizeof(option_menu_SINHVIEN);
-    cout << sizeof(option_menu_SINHVIEN[0]);
-    int menu_size = sizeof(option_menu_SINHVIEN) / sizeof(option_menu_SINHVIEN[0]);
-    cout << sizeof(option_menu_SINHVIEN);
-    cout << sizeof(option_menu_SINHVIEN[0]);
-    cout << menu_size;
     while(true)
     {
         int haveEntered = 0;
         system("cls");
-        get_highlight(highlight, option_menu_SINHVIEN, menu_size);
-        moveByArrow(highlight, option, haveEntered, menu_size);
+        get_highlight(highlight, option_menu_SINHVIEN, size(option_menu_SINHVIEN));
+        moveByArrow(highlight, option, haveEntered, size(option_menu_SINHVIEN));
         if (haveEntered == 0)
         {
             continue;
         }
-        cout << sizeof(option_menu_SINHVIEN);
-        cout << sizeof(option_menu_SINHVIEN[0]);
-        cout << menu_size;
         switch (option) 
         {
             case 0: // Them sinh vien
@@ -120,14 +110,12 @@ void main_menu(int& highlight, int option)
         "4. Nhap diem cho mon hoc",
         "5. Ket thuc chuong trinh"
     };
-    int menu_size = sizeof(mainMenuItems) / sizeof(mainMenuItems[0]);
-
     while(true)
     {
         int haveEntered = 0;
         system("cls");
-        get_highlight(highlight, mainMenuItems, menu_size);
-        moveByArrow(highlight, option, haveEntered, menu_size);
+        get_highlight(highlight, mainMenuItems, size(mainMenuItems));
+        moveByArrow(highlight, option, haveEntered, size(mainMenuItems));
         if (haveEntered == 0)
         {
             continue;

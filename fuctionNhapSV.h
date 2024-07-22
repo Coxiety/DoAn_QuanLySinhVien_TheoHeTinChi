@@ -38,6 +38,7 @@ bool check_TrungMaSV(DSSV &DanhSach, const string &maSV)
 //Doc thong tin SV tu File
 void docList_SinhVien(const string& tenFile, DSSV &DanhSach)
 {
+    sort_SinhVien(DanhSach);
     ifstream file(tenFile);
     if (!file.is_open())
     {
@@ -92,13 +93,14 @@ void ghiThongTinVaoFile(const string& tenFile, const DSSV& DanhSach)
 
     for (int i = 0; i < DanhSach.n; ++i)
     {
-        file << DanhSach.nodes[i].MaLop << " " << DanhSach.nodes[i].MaSV << endl;
-        file << DanhSach.nodes[i].Ho << endl;
+        if (i > 0) // Chỉ thêm dòng trống nếu không phải sinh viên đầu tiên
+        {
+            file << endl << endl;
+        }
+        file << DanhSach.nodes[i].MaLop << " " << DanhSach.nodes[i].MaSV << " " << DanhSach.nodes[i].Ho << endl;
         file << DanhSach.nodes[i].Ten << endl;
-        file << DanhSach.nodes[i].Phai << endl;
-        file << DanhSach.nodes[i].SoDT << endl;
+        file << DanhSach.nodes[i].Phai << " " << DanhSach.nodes[i].SoDT;
     }
-
     file.close();
 }
 
@@ -141,8 +143,8 @@ void nhapSinhVien(DSSV &DanhSach)
             cout << "Danh sach sinh vien da day.\n";
             break;
         }
-        sort_SinhVien(DanhSach);
     }
+    ghiThongTinVaoFile("list_SinhVien.txt", DanhSach);
 }
 
 void suaThongTin_SinhVien(DSSV &DanhSach)
