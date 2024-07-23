@@ -54,12 +54,13 @@ void docList_SinhVien(const string& tenFile, DSSV &DanhSach)
         // Doc thong tin MaLop & MaSV & Ho tren mot dong 
         getline(file, line);
         istringstream iss(line);
-        iss >> sv.MaLop >> sv.MaSV >> sv.Ho;
-
+        iss >> sv.MaLop >> sv.MaSV;
+        // Doc ho tren mot dong
+        getline(file, sv.Ho);
         // Doc ten tren mot dong
         getline(file, sv.Ten);
 
-        // Doc gioi tinh
+        // Doc gioi tinh và SDT trên một dòng
         getline(file, line);
         istringstream iss2(line);
         iss2 >> sv.Phai >> sv.SoDT;
@@ -97,7 +98,8 @@ void ghiThongTinVaoFile(const string& tenFile, const DSSV& DanhSach)
         {
             file << endl << endl;
         }
-        file << DanhSach.nodes[i].MaLop << " " << DanhSach.nodes[i].MaSV << " " << DanhSach.nodes[i].Ho << endl;
+        file << DanhSach.nodes[i].MaLop << " " << DanhSach.nodes[i].MaSV << endl;
+        file << DanhSach.nodes[i].Ho << endl;
         file << DanhSach.nodes[i].Ten << endl;
         file << DanhSach.nodes[i].Phai << " " << DanhSach.nodes[i].SoDT;
     }
@@ -124,10 +126,10 @@ void nhapSinhVien(DSSV &DanhSach)
             continue;
         }
         cout << "Nhap ho: ";
-        cin >> sv.Ho;
-        cin.ignore();
+        getline(cin, sv.Ho);
         cout << "Nhap ten: ";
-        getline(cin, sv.Ten);
+        cin >> sv.Ten;
+        cin.ignore();
         cout << "Nhap gioi tinh: ";
         cin >> sv.Phai;
         cin.ignore();
