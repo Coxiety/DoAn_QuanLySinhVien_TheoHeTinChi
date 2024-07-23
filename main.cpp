@@ -72,6 +72,7 @@ void SINHVIEN_menu(int& highlight, int option)
             case 0: // Them sinh vien
                 system("cls");
                 cout << "Them sinh vien" << endl;
+                inDanhSachSinhVien(DanhSach_SinhVien);
                 nhapSinhVien(DanhSach_SinhVien);
                 system("pause");
                 break;
@@ -84,11 +85,13 @@ void SINHVIEN_menu(int& highlight, int option)
             case 2: // Sua thong tin sinh vien
                 system("cls");
                 cout << "Sua thong tin sinh vien" << endl;
+                inDanhSachSinhVien(DanhSach_SinhVien);
                 suaThongTin_SinhVien(DanhSach_SinhVien);    
                 system("pause");
                 break;
             case 3: // Xoa sinh vien
                 system("cls");
+                inDanhSachSinhVien(DanhSach_SinhVien);
                 cout << "Xoa sinh vien" << endl;
                 system("pause");
                 break;

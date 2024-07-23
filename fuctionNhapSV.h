@@ -1,3 +1,5 @@
+#include "constrain.h"
+
 bool compareSinhVien(const SinhVien &a, const SinhVien &b) /*Ham Dung De so sanh Ten va Ho, so sanh thong tin cua 
 sinh vien A va B*/
 {
@@ -112,10 +114,11 @@ void nhapSinhVien(DSSV &DanhSach)
     while(true)
     {
         cout << "Nhap Ma Lop: ";
-        cin >> sv.MaLop;
-        cin.ignore();
+        getOnlyWord_Number(sv.MaLop, 15);
+        cout << endl;
         cout << "Nhap MSSV: ";
-        getline(cin, sv.MaSV);
+        getOnlyWord_Number_forMaSV(sv.MaSV, 15);
+        cout << endl;
         if (sv.MaSV.empty())
         {
             break;
@@ -126,16 +129,17 @@ void nhapSinhVien(DSSV &DanhSach)
             continue;
         }
         cout << "Nhap ho: ";
-        getline(cin, sv.Ho);
+        getOnlyWord_Space(sv.Ho, 50);
+        cout << endl;
         cout << "Nhap ten: ";
-        cin >> sv.Ten;
-        cin.ignore();
+        getOnlyWord(sv.Ten, 10);
+        cout << endl;
         cout << "Nhap gioi tinh: ";
-        cin >> sv.Phai;
-        cin.ignore();
+        getOnlyWord(sv.Phai, 4);
+        cout << endl;
         cout << "Nhap so DT: ";
-        cin >> sv.SoDT;
-        cin.ignore();
+        getOnlyNumber(sv.SoDT, 10);
+        cout << endl;
         if (DanhSach.n < MaxSV)
         {
             DanhSach.nodes[DanhSach.n++] = sv;
