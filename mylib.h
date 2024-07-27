@@ -17,7 +17,7 @@ using namespace std;
 //const int WHITE=15;
 char* Pwd () {
      char S[40]; int i=0;
-     while ((S[i]= getch()) != Enter ) 
+     while ((S[i]= _getch()) != Enter ) 
      { printf ("%c", '*') ; i++ ; 
      }
      S[i]='\0';

@@ -1,28 +1,33 @@
 #include "mylib.h"
 #pragma once
-struct MonHoc {
+struct MonHoc 
+{
 	string MaMH; string TenMH;
 	int STCLT, STCTH;
 };
-struct nodeMonHoc {
+struct nodeMonHoc 
+{
 	MonHoc mh;
 	struct nodeMonHoc *left;
 	struct nodeMonHoc *right;
 };
 typedef nodeMonHoc *PTRMH;
 // dang ki LTC - lk don
-struct DangKy {
+struct DangKy 
+{
 	string MaSV;
 	int TrangThai = 1;
 	float Diem;
 };
-struct nodeDangKy {
+struct nodeDangKy 
+{
 	DangKy dk;
 	nodeDangKy *next;
 };
 typedef nodeDangKy *PTRDK;
 // Danh sach LTC - danh sach tuyen tinh
-struct LopTinChi {
+struct LopTinChi 
+{
 	int MaLopTC;
 	string MaMH;
 	string NienKhoa;
@@ -31,12 +36,14 @@ struct LopTinChi {
 	PTRDK FirstDK = NULL;
 };
 const int MaxLTC = 10000;
-struct DSLTC {
+struct DSLTC 
+{
 	LopTinChi *nodes[MaxLTC];
 	int n = 0;
 };
 // Danh sach SV - danh sach tuyen tinh
-struct SinhVien {
+struct SinhVien 
+{
 	string MaSV;
 	string Ho;
 	string Ten;
