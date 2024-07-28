@@ -74,6 +74,7 @@ void SINHVIEN_menu(int& highlight, int option)
             case 3: // Xoa sinh vien
                 system("cls");
                 inDanhSachSinhVien(DanhSach_SinhVien);
+                xoa_SinhVien(DanhSach_SinhVien);
                 cout << "Xoa sinh vien" << endl;
                 system("pause");
                 break;

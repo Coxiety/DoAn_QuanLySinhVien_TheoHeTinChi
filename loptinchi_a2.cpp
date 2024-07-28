@@ -1,67 +1,68 @@
 #include "header.h"
 
-// struct MonHoc {
-//     char MaMH[11];
-//     char TenMH[51];
-//     int STCLT;
-//     int STCTH;
-// };
+struct MonHoc 
+{
+    char MaMH[11];
+    char TenMH[51];
+    int STCLT;
+    int STCTH;
+};
 
-// struct nodeMonHoc {
-//     MonHoc mh;
-//     struct nodeMonHoc *left;
-//     struct nodeMonHoc *right;
-// };
+struct nodeMonHoc {
+    MonHoc mh;
+    struct nodeMonHoc *left;
+    struct nodeMonHoc *right;
+};
 
-// typedef nodeMonHoc *PTRMH;
+typedef nodeMonHoc *PTRMH;
 
-// struct DangKy {
-//     char MaSV[16];
-//     int TrangThai;
-//     float Diem;
-// };
+struct DangKy {
+    char MaSV[16];
+    int TrangThai;
+    float Diem;
+};
 
-// struct nodeDangKy {
-//     DangKy dk;
-//     nodeDangKy *next;
-// };
+struct nodeDangKy {
+    DangKy dk;
+    nodeDangKy *next;
+};
 
-// typedef nodeDangKy *PTRDK;
+typedef nodeDangKy *PTRDK;
 
-// struct LopTinChi {
-//     int MaLopTC;
-//     char MaMH[11];
-//     char NienKhoa[10];
-//     int HocKy;
-//     int Nhom;
-//     int SoSVMin;
-//     int SoSVMax;
-//     int TrangThaiLTC;
-//     PTRDK FirstDK;
-// };
+struct LopTinChi {
+    int MaLopTC;
+    char MaMH[11];
+    char NienKhoa[10];
+    int HocKy;
+    int Nhom;
+    int SoSVMin;
+    int SoSVMax;
+    int TrangThaiLTC;
+    PTRDK FirstDK;
+};
 
-// const int MaxLTC = 10000;
+const int MaxLTC = 10000;
 
-// struct DSLTC {
-//     LopTinChi *nodes[MaxLTC];
-//     int n;
-// };
+struct DSLTC {
+    LopTinChi *nodes[MaxLTC];
+    int n;
+};
 
-// struct SinhVien {
-//     char MaSV[16];
-//     char Ho[51];
-//     char Ten[11];
-//     char Phai[4];
-//     char SoDT[15];
-//     char MaLop[16];
-// };
+struct SinhVien {
+    char MaSV[16];
+    char Ho[51];
+    char Ten[11];
+    char Phai[4];
+    char SoDT[15];
+    char MaLop[16];
+};
 
-// const int MaxSV = 5000;
+const int MaxSV = 5000;
 
-// struct DSSV {
-//     SinhVien nodes[MaxSV];
-//     int n;
-// };
+struct DSSV {
+    SinhVien nodes[MaxSV];
+    int n;
+};
 
 istream& operator>>(istream &is, LopTinChi &ltc) {
     cout << "Nhap ma lop tin chi: ";

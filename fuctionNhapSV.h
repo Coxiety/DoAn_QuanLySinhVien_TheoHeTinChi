@@ -14,7 +14,6 @@ sinh vien A va B*/
     return a.Ho < b.Ho;
 }
 
-// Hàm chèn sinh viên vào danh sách đã sắp xếp
 // void insertSorted(DSSV &DanhSach, const SinhVien &sv)
 // {
 //     int i = DanhSach.n - 1;
@@ -243,6 +242,27 @@ void suaThongTin_SinhVien(DSSV &DanhSach)
         //}
     cout << "Khong tim thay sinh vien voi ma lop va ma sinh vien da nhap.\n";
     }
+}
+
+void xoa_SinhVien(DSSV &DanhSach)
+{
+    string MSSV;
+    cout << "Nhap MSSV: ";
+    getline(cin, MSSV);
+    for(int i = 0; i < DanhSach.n; i++)
+    {
+        if (DanhSach.nodes[i].MaSV == MSSV)
+        {
+            for (int j = i; j < DanhSach.n - 1; ++j)
+            {
+                DanhSach.nodes[j] = DanhSach.nodes[j + 1];
+            }
+            --DanhSach.n;
+            cout << "Da xoa sinh vien co MSSV: " << MSSV << endl;
+            return;
+        }
+    }
+    cout << "Khong tim thay sinh vien co MSSV: " << MSSV << endl;
 }
 
 void inDanhSachSinhVien(const DSSV &DanhSach) 
