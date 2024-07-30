@@ -31,7 +31,7 @@ void get_highlight(int highlight, const string which_Menu[], int menu_size)
 
 void SINHVIEN_menu(int& highlight, int option)
 {
-    string option_menu_SINHVIEN[]
+    string option_menu_MONHOC[]
     {
         "1. Them sinh vien",
         "2. In danh sach sinh vien",
@@ -43,8 +43,8 @@ void SINHVIEN_menu(int& highlight, int option)
     {
         int haveEntered = 0;
         system("cls");
-        get_highlight(highlight, option_menu_SINHVIEN, size(option_menu_SINHVIEN));
-        moveByArrow(highlight, option, haveEntered, size(option_menu_SINHVIEN));
+        get_highlight(highlight, option_menu_MONHOC, size(option_menu_MONHOC));
+        moveByArrow(highlight, option, haveEntered, size(option_menu_MONHOC));
         if (haveEntered == 0)
         {
             continue;
@@ -86,7 +86,66 @@ void SINHVIEN_menu(int& highlight, int option)
     }
 }
 
-void main_menu(int& highlight, int option) 
+void MONHOC_Menu(int& highlight, int option, PTRMH& root) {
+    string option_menu_MONHOC[] = {
+        "1. Them mon hoc",
+        "2. In danh sach mon hoc",
+        "3. Sua thong tin mon hoc",
+        "4. Xoa mon hoc",
+        "5. Thoat chuc nang"
+    };
+
+    while (true) {
+        int haveEntered = 0; // Khởi tạo biến ngay trong vòng lặp
+        system("cls");
+        get_highlight(highlight, option_menu_MONHOC, static_cast<int>(size(option_menu_MONHOC)));
+        moveByArrow(highlight, option, haveEntered, static_cast<int>(size(option_menu_MONHOC)));
+        if (haveEntered == 0) {
+            continue;
+        }
+        //string maMH;
+        string maMHToDelete;
+        switch (option) {
+            case 0: // Thêm môn học
+                system("cls");
+                cout << "Them mon hoc" << endl;
+                nhapMonHoc(root);
+                system("pause");
+                break;
+            case 1: // In danh sách môn học từ file
+                system("cls");
+                cout << "In danh sach mon hoc" << endl;
+                inDanhSachMonHocTuFile("list_MonHoc.txt");
+                system("pause");
+                break;
+            case 2: // Sửa thông tin môn học
+                system("cls");
+                cout << "Sua thong tin mon hoc" << endl;
+                inDanhSachMonHocTuFile("list_MonHoc.txt"); // In danh sách trước khi sửa
+                //cout << "Nhap Ma Mon Hoc can sua: ";
+                //cin.ignore();
+                //getline(cin, maMH);
+                suaMonHocVaGhiRaFile("list_MonHoc.txt");
+                system("pause");
+                break;
+            case 3: // Xóa môn học
+                system("cls");
+                inDanhSachMonHocTuFile("list_MonHoc.txt");; // In danh sách trước khi xóa
+                cout << "Nhap Ma Mon Hoc can xoa: ";
+                cin.ignore();
+                getline(cin, maMHToDelete);
+                root = xoaMonHoc(root, maMHToDelete); // Đảm bảo bạn có hàm xoaMonHoc
+                system("pause");
+                break;
+            case 4: // Thoát chức năng
+                return;
+            default:
+                return;
+        }
+    }
+}
+
+void main_menu(int& highlight, int option, PTRMH& root) 
 {
     string mainMenuItems[]
     {
@@ -121,6 +180,7 @@ void main_menu(int& highlight, int option)
             case 2:
                 system("cls");
                 cout << "Danh sach Mon Hoc" << endl;
+                MONHOC_Menu(highlight, option, root);
                 system("pause");
                 break;
             case 3:

@@ -57,6 +57,7 @@ string getOnlyWord_Number_forMaSV(string &input, int limit)//Chỉ lấy chử v
     }
     return input;
 }
+
 string getOnlyWord(string &input, int limit)//chỉ lấy chữ
 {
     char ch;

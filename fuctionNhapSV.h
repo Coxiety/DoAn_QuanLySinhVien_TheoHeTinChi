@@ -1,5 +1,3 @@
-#pragma once
-
 bool compareSinhVien(const SinhVien &a, const SinhVien &b) /*Ham Dung De so sanh Ten va Ho, so sanh thong tin cua 
 sinh vien A va B*/
 {
@@ -37,6 +35,7 @@ bool check_TrungMaSV(DSSV &DanhSach, const string &maSV)
     }
     return false;
 }
+
 //Doc thong tin SV tu File
 void docList_SinhVien(const string& tenFile, DSSV &DanhSach)
 {
@@ -145,12 +144,15 @@ void ghiThongTinVaoFile(const string& tenFile, DSSV& DanhSach)
 void nhapSinhVien(DSSV &DanhSach)
 {   
     SinhVien sv;
-    while(true)
+    // string maLopChung;
+    cout << "Nhap Ma Lop chung cho tat ca sinh vien: ";
+    getOnlyWord_Number_forMaSV(sv.MaLop, 15);
+    cout << endl;
+
+    while (true)
     {
-        // insertSorted(DanhSach, sv);
-        cout << "Nhap Ma Lop: ";
-        getOnlyWord_Number(sv.MaLop, 15);
-        cout << endl;
+        // sv.MaLop = sv.MaLop;  // Gán mã lớp chung cho sinh viên mới
+
         cout << "Nhap MSSV: ";
         getOnlyWord_Number_forMaSV(sv.MaSV, 15);
         cout << endl;
