@@ -192,13 +192,32 @@ void nhapSinhVien(DSSV &DanhSach)
 
 void suaThongTin_SinhVien(DSSV &DanhSach)
 {
-    string MSSV;
-    cout << "Nhap MSSV: ";
-    getline(cin, MSSV);
-    for(int i = 0; i < DanhSach.n; i++)
+    while (true) 
     {
-        // for (int i = 0; i < DanhSach.n; ++i)
-        // {
+        string MSSV;
+        cout << "Nhap MSSV: ";
+        getline(cin, MSSV);
+
+        // Kiểm tra MSSV có trong danh sách không
+        bool found = false;
+        for (int i = 0; i < DanhSach.n; i++) 
+        {
+            if (DanhSach.nodes[i].MaSV == MSSV) 
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) 
+        {
+            cout << "Khong co thong tin MSSV trong danh sach. Vui long nhap lai.\n";
+            continue;
+        }
+
+        // Sửa thông tin sinh viên nếu MSSV tồn tại
+        for (int i = 0; i < DanhSach.n; i++) 
+        {
             if (DanhSach.nodes[i].MaSV == MSSV) 
             {
                 SinhVien &sv = DanhSach.nodes[i];
@@ -213,11 +232,12 @@ void suaThongTin_SinhVien(DSSV &DanhSach)
                 string newMaSV;
                 getline(cin, newMaSV);
                 if (!newMaSV.empty()) sv.MaSV = newMaSV;
-                if (check_TrungMaSV(DanhSach, newMaSV) == true)
+                if (check_TrungMaSV(DanhSach, newMaSV) == true) 
                 {
-                    cout << "Trung ma voi sinh vien khac";
-                    return;
+                    cout << "Trung ma voi sinh vien khac. Vui long nhap lai MSSV.\n";
+                    continue;
                 }
+
                 cout << "Nhap ho (" << sv.Ho << "): ";
                 string newHo;
                 getline(cin, newHo);
@@ -237,12 +257,12 @@ void suaThongTin_SinhVien(DSSV &DanhSach)
                 string newSoDT;
                 getline(cin, newSoDT);
                 if (!newSoDT.empty()) sv.SoDT = newSoDT;
+
                 ghiThongTinVaoFile("list_SinhVien.txt", DanhSach);
                 cout << "Thong tin sinh vien da duoc cap nhat.\n";
                 return;
             }
-        //}
-    cout << "Khong tim thay sinh vien voi ma lop va ma sinh vien da nhap.\n";
+        }
     }
 }
 
