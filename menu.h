@@ -114,6 +114,7 @@ void SINHVIEN_menu(int& highlight, int option)
 
 void MonHoc_Menu(int& highlight, int option, PTRMH& root, PTRMHTheoTen rootTheoTen) {
     system("cls");
+    saoChepCay(root, rootTheoTen);
     string option_menu_MONHOC[] = {
         "1. Them mon hoc",
         "2. In danh sach mon hoc",
@@ -142,8 +143,8 @@ void MonHoc_Menu(int& highlight, int option, PTRMH& root, PTRMHTheoTen rootTheoT
                 break;
             case 1: // In danh sách môn học 
                 system("cls");
+                // saoChepCay(root, rootTheoTen);
                 cout << "In danh sach mon hoc" << endl;
-                saoChepCay(root, rootTheoTen);
                 inDanhSachMonHocTheoTen(rootTheoTen);
                 system("pause");
                 system("cls");
@@ -162,12 +163,13 @@ void MonHoc_Menu(int& highlight, int option, PTRMH& root, PTRMHTheoTen rootTheoT
                 cout << "Nhap Ma Mon Hoc can xoa: ";
                 getline(cin, maMHToDelete);
                 root = xoaMonHoc(root, maMHToDelete); 
-                saoChepCay(root, rootTheoTen);
+                // saoChepCay(root, rootTheoTen);
                 system("pause");
                 system("cls");
                 break;
             case 4: // Thoát chức năng
                 system("cls");
+                // saoChepCay(root, rootTheoTen);
                 ghiDanhSachMonHoc(rootTheoTen, "list_MonHoc.txt"); // Ghi dữ liệu vào file trước khi thoát
                 return;
             default:

@@ -209,12 +209,13 @@ void docMonHocTuFile(const string& tenFile, PTRMH& root) {
 
     file.close(); // Đóng tệp sau khi đã đọc xong
 }
-void ghiDanhSach(PTRMH node, ofstream& file) {
+void ghiDanhSach(PTRMH node, ofstream& file) 
+{
     if (node) {
         ghiDanhSach(node->left, file);
-        file << node->mh.MaMH << endl
-            << node->mh.TenMH << endl
-            << node->mh.STCLT << " " << node->mh.STCTH << endl;
+        file << node->mh.MaMH << endl;
+        file << node->mh.TenMH << endl;
+        file << node->mh.STCLT << " " << node->mh.STCTH;
         ghiDanhSach(node->right, file);
     }
 }
@@ -264,12 +265,12 @@ void nhapMonHoc(PTRMH& root) {
 }
 // Hàm ghi cây nhị phân vào file theo thứ tự trung tố
 void ghiMonHocTheoThuTu(PTRMHTheoTen node, ofstream& file) {
-    if (node != nullptr) {
+    if (node != nullptr) 
+    {
         ghiMonHocTheoThuTu(node->left, file); // Duyệt trái
         file << node->mh.MaMH << endl;
         file << node->mh.TenMH << endl;
-        file << node->mh.STCLT << endl;
-        file << node->mh.STCTH << endl;
+        file << node->mh.STCLT << " " << node->mh.STCTH << endl;
         ghiMonHocTheoThuTu(node->right, file); // Duyệt phải
     }
 }
