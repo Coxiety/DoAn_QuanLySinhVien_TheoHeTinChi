@@ -113,8 +113,8 @@ void SINHVIEN_menu(int& highlight, int option)
     }
 }
 
-void MonHoc_Menu(int& highlight, int option, PTRMH& root) {
-    docMonHocTuFile("list_MonHoc.txt", root);
+void MonHoc_Menu(int& highlight, int option, PTRMH& root, PTRMHTheoTen rootTheoTen) {
+ 
     string option_menu_MONHOC[] = {
         "1. Them mon hoc",
         "2. In danh sach mon hoc",
@@ -143,7 +143,8 @@ void MonHoc_Menu(int& highlight, int option, PTRMH& root) {
             case 1: // In danh sách môn học 
                 system("cls");
                 cout << "In danh sach mon hoc" << endl;
-                inDanhSachMonHoc(root);
+                saoChepCay(root, rootTheoTen);
+                inDanhSachMonHocTheoTen(rootTheoTen);
                 system("pause");
                 break;
             case 2: // Sửa thông tin môn học
@@ -157,13 +158,13 @@ void MonHoc_Menu(int& highlight, int option, PTRMH& root) {
                 system("cls");
                 inDanhSachMonHoc(root); // In danh sách trước khi xóa
                 cout << "Nhap Ma Mon Hoc can xoa: ";
-                cin.ignore();
                 getline(cin, maMHToDelete);
-                root = xoaMonHoc(root, maMHToDelete); // Đảm bảo bạn có hàm xoaMonHoc
+                root = xoaMonHoc(root, maMHToDelete); 
+                saoChepCay(root, rootTheoTen);
                 system("pause");
                 break;
             case 4: // Thoát chức năng
-                ghiDanhSachMonHoc(root, "list_MonHoc.txt"); // Ghi dữ liệu vào file trước khi thoát
+                ghiDanhSachMonHoc(rootTheoTen, "list_MonHoc.txt"); // Ghi dữ liệu vào file trước khi thoát
                 return;
             default:
                 return;
@@ -233,7 +234,7 @@ void LTC_menu(int& highlight, int option, DSLTC& DSLTC,PTRMH &root)
     }
 }
 
-void main_menu(int& highlight, int option, PTRMH& root, DSLTC& dsLTC)
+void main_menu(int& highlight, int option, PTRMH& root, DSLTC& dsLTC, PTRMHTheoTen& rootTheoTen)
 {
     string mainMenuItems[]
     {
@@ -270,7 +271,7 @@ void main_menu(int& highlight, int option, PTRMH& root, DSLTC& dsLTC)
             case 2:
                 system("cls");
                 cout << "Danh sach Mon Hoc" << endl;
-                MonHoc_Menu(highlight, option, root);
+                MonHoc_Menu(highlight, option, root, rootTheoTen);
                 system("pause");
                 break;
             case 3:
