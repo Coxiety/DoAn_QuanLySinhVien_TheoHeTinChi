@@ -1,23 +1,25 @@
-#include <functional>
 // ham da dược định nghĩa
 void ghiMonHocRaFile(const string& tenFile, PTRMH root);
+void docMonHocTuFile(const string& tenFile, PTRMH& root);
+PTRMH xoaMonHoc(PTRMH root, const string& maMH);
 
 // In-order traversal để in cây
 void inCay(PTRMH root) {
-    if (root) {
-        inCay(root->left);
+    if (root) { // Kiểm tra nếu root không phải là nullptr
+        inCay(root->left); // Duyệt cây con trái
         cout << "Ma Mon Hoc: " << root->mh.MaMH << endl;
         cout << "Ten Mon Hoc: " << root->mh.TenMH << endl;
         cout << "STCLT: " << root->mh.STCLT << endl;
         cout << "STCTH: " << root->mh.STCTH << endl;
-        inCay(root->right);
+        inCay(root->right); // Duyệt cây con phải
     }
 }
-void xoaCay(PTRMH root) {
-    if (root) {
-        xoaCay(root->left);
-        xoaCay(root->right);
-        delete root;
+void inDanhSachMonHoc(PTRMH root) {
+    if (!root) {
+        cout << "Danh sach mon hoc trong." << endl;
+    }
+    else {
+        inCay(root);
     }
 }
 
@@ -47,97 +49,86 @@ PTRMH timKiemMonHoc(PTRMH root, const string& maMH) {
     if (root == nullptr || root->mh.MaMH == maMH) {
         return root;
     }
-    else if (maMH < root->mh.MaMH) {
+
+    if (maMH < root->mh.MaMH) {
         return timKiemMonHoc(root->left, maMH);
     }
     else {
         return timKiemMonHoc(root->right, maMH);
     }
 }
-
-// Hàm xóa môn học trong cây nhị phân
-PTRMH xoaMonHoc(PTRMH root, const string& maMH) {
-    if (root == nullptr) {
-        return nullptr;
-    }
-
-    if (maMH < root->mh.MaMH) {
-        root->left = xoaMonHoc(root->left, maMH);
-    }
-    else if (maMH > root->mh.MaMH) {
-        root->right = xoaMonHoc(root->right, maMH);
-    }
-    else {
-        // Node to be deleted
-        if (root->left == nullptr) {
-            PTRMH temp = root->right;
-            delete root;
-            return temp;
-        }
-        else if (root->right == nullptr) {
-            PTRMH temp = root->left;
-            delete root;
-            return temp;
-        }
-
-        // Node with two children
-        PTRMH temp = root->right;
-        while (temp->left != nullptr) {
-            temp = temp->left;
-        }
-
-        root->mh = temp->mh;
-        root->right = xoaMonHoc(root->right, temp->mh.MaMH);
-    }
-    return root;
-}
+ 
 // Hàm sửa thông tin môn học trong cây nhị phân
-void suaMonHoc(PTRMH& root, const string& maMH) {
+void suaMonHoc(PTRMH& root) {
+    string maMH;
+    cout << "Nhap ma mon hoc can sua : ";
+    getline(cin, maMH);
+
+    // Tìm kiếm nút chứa môn học
     PTRMH node = timKiemMonHoc(root, maMH);
+
     if (node) {
         MonHoc& mh = node->mh;
-cout << "Nhap thong tin moi cho mon hoc (de trong neu khong thay doi):\n";
+        cout << "Nhap thong tin moi cho mon hoc (de trong neu khong thay doi):\n";
 
-        // Giu lai ma mon hoc cu de kiem tra trung lap
+        // Cập nhật thông tin môn học
         string oldMaMH = mh.MaMH;
+        string newMaMH;
 
-        // Nhap ma mon hoc va kiem tra trung lap
         while (true) {
             cout << "Nhap Ma Mon Hoc (" << mh.MaMH << "): ";
-            string newMaMH;
             getline(cin, newMaMH);
 
-            // Neu nguoi dung khong nhap gi, giu nguyen ma mon hoc cu
             if (newMaMH.empty()) {
                 newMaMH = mh.MaMH;
             }
 
-            // Neu ma mon hoc moi khong trung lap hoac trung voi ma cu, thi cho phep cap nhat
+            // Kiểm tra mã môn học mới có bị trùng không
             if (newMaMH == oldMaMH || !checkTrungMaMH(root, newMaMH)) {
-                
-                mh.MaMH = newMaMH; // Cap nhat ma mon hoc moi
-                break; // Thoat vong lap neu ma hop le
+                if (newMaMH != oldMaMH) {
+            // Cập nhật mã môn học
+                    mh.MaMH = newMaMH;
+                }
+                break;
             }
             else {
                 cout << "Ma mon hoc da ton tai. Vui long nhap lai.\n";
             }
         }
 
-        // Nhap cac thong tin khac
+        // Cập nhật tên môn học
         cout << "Nhap Ten Mon Hoc (" << mh.TenMH << "): ";
         string newTenMH;
         getline(cin, newTenMH);
         if (!newTenMH.empty()) mh.TenMH = newTenMH;
 
+        // Cập nhật số tín chỉ lý thuyết
         cout << "Nhap So Tin Chi Ly Thuyet (" << mh.STCLT << "): ";
         string newSTCLT;
         getline(cin, newSTCLT);
-        if (!newSTCLT.empty()) mh.STCLT = stoi(newSTCLT);
+        try {
+            if (!newSTCLT.empty()) mh.STCLT = stoi(newSTCLT);
+        }
+        catch (const invalid_argument& e) {
+            cout << "Gia tri khong hop le cho So Tin Chi Ly Thuyet. Gia tri cu duoc giu lai.\n";
+        }
 
+        // Cập nhật số tín chỉ thực hành
         cout << "Nhap So Tin Chi Thuc Hanh (" << mh.STCTH << "): ";
         string newSTCTH;
         getline(cin, newSTCTH);
-        if (!newSTCTH.empty()) mh.STCTH = stoi(newSTCTH);
+        try {
+            if (!newSTCTH.empty()) mh.STCTH = stoi(newSTCTH);
+        }
+        catch (const invalid_argument& e) {
+            cout << "Gia tri khong hop le cho So Tin Chi Thuc Hanh. Gia tri cu duoc giu lai.\n";
+        }
+
+        // Xóa nút cũ (nếu mã môn học đã thay đổi) và thêm nút mới
+        if (newMaMH != oldMaMH) {
+            root = xoaMonHoc(root, oldMaMH);
+            themMonHoc(root, mh);
+        }
 
         cout << "Thong tin mon hoc da duoc cap nhat.\n";
     }
@@ -145,8 +136,6 @@ cout << "Nhap thong tin moi cho mon hoc (de trong neu khong thay doi):\n";
         cout << "Khong tim thay mon hoc voi ma " << maMH << "\n";
     }
 }
-
-
 // Hàm đọc môn học từ file và lưu vào cây nhị phân
 void docMonHocTuFile(const string& tenFile, PTRMH& root) {
     ifstream file(tenFile);
@@ -159,33 +148,31 @@ void docMonHocTuFile(const string& tenFile, PTRMH& root) {
     string line;
 
     while (getline(file, mh.MaMH)) {
-        getline(file, mh.TenMH);
-        getline(file, line);
+        // Xóa khoảng trắng đầu và cuối của MaMH
+        mh.MaMH.erase(0, mh.MaMH.find_first_not_of(' '));
+        mh.MaMH.erase(mh.MaMH.find_last_not_of(' ') + 1);
+
+        if (!getline(file, mh.TenMH)) break; // Đọc dòng tiếp theo
+        // Xóa khoảng trắng đầu và cuối của TenMH
+        mh.TenMH.erase(0, mh.TenMH.find_first_not_of(' '));
+        mh.TenMH.erase(mh.TenMH.find_last_not_of(' ') + 1);
+
+        if (!getline(file, line)) break; // Đọc dòng tiếp theo
         istringstream iss(line);
 
         int stclt, stcth;
         if (!(iss >> stclt >> stcth)) {
             cerr << "Loi: Du lieu STCLT va STCTH khong hop le" << endl;
-            continue; // Bo qua dong nay va tiep tuc voi dong tiep theo
+            continue; // Bỏ qua dòng này và tiếp tục với dòng tiếp theo
         }
 
         mh.STCLT = stclt;
         mh.STCTH = stcth;
 
-        // Kiem tra xem ma mon hoc co bi trung khong
-        if (checkTrungMaMH(root, mh.MaMH)) {
-            cout << "Ma mon hoc " << mh.MaMH << " da ton tai." << endl;
-            suaMonHoc(root, mh.MaMH); // Goi ham suaMonHoc neu ma bi trung
-        }
-        else {
-            themMonHoc(root, mh); // Them mon hoc moi neu khong trung
-        }
+        themMonHoc(root, mh); // Thêm môn học vào cây
     }
 
-    file.close();
-
-    // Sau khi sua xong, cap nhat danh sach mon hoc vao file
-    ghiMonHocRaFile(tenFile, root);
+    file.close(); // Đóng tệp sau khi đã đọc xong
 }
 // Hàm ghi môn học ra file mà không xóa dữ liệu cũ và không chèn lên dữ liệu cũ
 void ghiMonHocRaFile(const string& tenFile, PTRMH root) {
@@ -209,12 +196,6 @@ void ghiMonHocRaFile(const string& tenFile, PTRMH root) {
     ghiDanhSach(root);
     file.close();
 }
-// Hàm kiểm tra file có trống hay không
-bool fileIsEmpty(const string& tenFile) {
-    ifstream file(tenFile);
-    return file.peek() == ifstream::traits_type::eof();
-}
-
 // Hàm nhập môn học và ghi dữ liệu vào file
 void nhapMonHoc(PTRMH& root) {
     MonHoc mh;
@@ -235,6 +216,7 @@ void nhapMonHoc(PTRMH& root) {
 
         // Nhập tên môn học và số tín chỉ
         cout << "Nhap Ten Mon Hoc : ";
+
         getline(cin, mh.TenMH);
         cout << "Nhap So Tin Chi Li Thuyet : ";
         cin >> mh.STCLT;
@@ -244,41 +226,80 @@ void nhapMonHoc(PTRMH& root) {
 
         themMonHoc(root, mh);
 
-        // Ghi môn học mới vào file
-        ghiMonHocRaFile("list_MonHoc.txt", root);
+      
     }
 }
-// Hàm sửa thông tin môn học và ghi dữ liệu cập nhật vào file
-void suaMonHocVaGhiRaFile(PTRMH& root, const string& tenFile) {
-    string maMH;
-    cout << "Nhap Ma Mon Hoc de sua: ";
-    getline(cin, maMH);
-    suaMonHoc(root, maMH);
-
-    // Ghi lại toàn bộ dữ liệu từ cây vào file
-    ghiMonHocRaFile(tenFile, root);
+// Hàm ghi cây nhị phân vào file theo thứ tự trung tố
+void ghiMonHocTheoThuTu(PTRMH node, ofstream& file) {
+    if (node != nullptr) {
+        ghiMonHocTheoThuTu(node->left, file); // Duyệt trái
+        file << node->mh.MaMH << endl;
+        file << node->mh.TenMH << endl;
+        file << node->mh.STCLT << endl;
+        file << node->mh.STCTH << endl;
+        ghiMonHocTheoThuTu(node->right, file); // Duyệt phải
+    }
 }
-void suaMonHocVaGhiRaFile(const string& tenFile) {
-    PTRMH root = nullptr;
-    docMonHocTuFile(tenFile, root);  // Đọc dữ liệu từ file và xây dựng cây nhị phân
 
-    suaMonHocVaGhiRaFile(root, tenFile);  // Sửa thông tin và ghi lại dữ liệu vào file
+// Hàm ghi toàn bộ cây nhị phân vào file
+void ghiDanhSachMonHoc(PTRMH root, const string& filename) {
+    ofstream file(filename);
 
-    // Giải phóng bộ nhớ (nếu cần)
-     xoaCay(root);  // Hàm xóa cây nhị phân để giải phóng bộ nhớ
-}
-// Hàm in danh sách môn học từ file
-void inDanhSachMonHocTuFile(const string& tenFile) {
-    PTRMH root = nullptr;
-    docMonHocTuFile(tenFile, root);  // Đọc từ file và xây dựng cây nhị phân
-
-    if (root == nullptr) {
-cout << "Danh sach mon hoc trong.\n";
+    if (file.is_open()) {
+        ghiMonHocTheoThuTu(root, file);
+        file.close();
     }
     else {
-        inCay(root);  // In danh sách môn học từ cây nhị phân
+        cout << "Khong the mo file de ghi du lieu.\n";
+    }
+}
+// Hàm tìm kiếm nút nhỏ nhất trong cây con bên phải
+PTRMH timNhoNhat(PTRMH node) {
+    PTRMH current = node;
+    while (current && current->left != nullptr) {
+        current = current->left;
+    }
+    return current;
+}
+
+// Hàm xóa một nút khỏi cây nhị phân tìm kiếm
+PTRMH xoaMonHoc(PTRMH root, const string& maMH) {
+    if (!root) {
+        return root; // Cây rỗng hoặc không tìm thấy mã môn học
     }
 
-    // Giải phóng bộ nhớ (cần thêm hàm giải phóng nếu có)
-    // xoaCay(root);  // Hàm xóa cây nhị phân để giải phóng bộ nhớ
+    if (maMH < root->mh.MaMH) {
+        root->left = xoaMonHoc(root->left, maMH);
+    }
+else if (maMH > root->mh.MaMH) {
+        root->right = xoaMonHoc(root->right, maMH);
+    }
+    else {
+        // Nút cần xóa được tìm thấy
+
+        // Nút không có con (nút lá)
+        if (!root->left && !root->right) {
+            delete root;
+            return nullptr;
+        }
+
+        // Nút có một con
+        if (!root->left) {
+            PTRMH temp = root->right;
+            delete root;
+            return temp;
+        }
+        if (!root->right) {
+            PTRMH temp = root->left;
+            delete root;
+            return temp;
+        }
+
+        // Nút có hai con
+        PTRMH temp = timNhoNhat(root->right); // Tìm nút nhỏ nhất trong cây con bên phải
+        root->mh = temp->mh; // Sao chép dữ liệu của nút thay thế vào nút cần xóa
+        root->right = xoaMonHoc(root->right, temp->mh.MaMH); // Xóa nút thay thế
+    }
+
+    return root;
 }

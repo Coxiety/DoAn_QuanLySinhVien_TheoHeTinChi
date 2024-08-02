@@ -149,4 +149,3 @@ string getOnlyNumber(string &input, int limit)
     }
     return input;
 }
-

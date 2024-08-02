@@ -281,8 +281,10 @@ void xoa_SinhVien(DSSV &DanhSach)
             }
             --DanhSach.n;
             cout << "Da xoa sinh vien co MSSV: " << MSSV << endl;
+            system("cls");
             return;
         }
+        ghiThongTinVaoFile("list_SinhVien.txt", DanhSach);
     }
     cout << "Khong tim thay sinh vien co MSSV: " << MSSV << endl;
 }

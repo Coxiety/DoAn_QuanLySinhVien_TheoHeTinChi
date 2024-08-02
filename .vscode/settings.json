@@ -6,6 +6,7 @@
         "xstring": "cpp",
         "initializer_list": "cpp",
         "utility": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "functional": "cpp"
     }
 }

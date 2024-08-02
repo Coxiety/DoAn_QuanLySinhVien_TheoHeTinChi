@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <functional>
 #pragma once
 using namespace std;
 
@@ -15,23 +16,23 @@ using namespace std;
 //const int WHITE=15;
 #define PASSWORD "abcdef"
 //const int WHITE=15;
-char* Pwd () {
-     char S[40]; int i=0;
-     while ((S[i]= _getch()) != Enter ) 
-     { printf ("%c", '*') ; i++ ; 
-     }
-     S[i]='\0';
-     return S;
-}
-int CheckPwd () {
-    int dem =0; 
-    for ( dem =1 ; dem <=3 ; dem++)
-    { printf( "Password :"); 
-      if (strcmp(Pwd(),PASSWORD) ==0)   return 1;
-      else printf ( "\nPassword sai. Hay nhap lai\n")  ; 
-    }
-    return 0;  
-}
+// char* Pwd () {
+//      char S[40]; int i=0;
+//      while ((S[i]= _getch()) != Enter ) 
+//      { printf ("%c", '*') ; i++ ; 
+//      }
+//      S[i]='\0';
+//      return S;
+// }
+// int CheckPwd () {
+//     int dem =0; 
+//     for ( dem =1 ; dem <=3 ; dem++)
+//     { printf( "Password :"); 
+//       if (strcmp(Pwd(),PASSWORD) ==0)   return 1;
+//       else printf ( "\nPassword sai. Hay nhap lai\n")  ; 
+//     }
+//     return 0;  
+// }
 
 void gotoxy(short x,short y)
 {

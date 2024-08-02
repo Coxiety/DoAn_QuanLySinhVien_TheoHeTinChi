@@ -1,6 +1,24 @@
 #pragma once
-
+int currentMaLopTC;
 DSSV DanhSach_SinhVien;
+
+void moveByArrow(int& highlight, int& option, int& haveEntered, int menu_size)
+{
+    int key = _getch();
+    switch (key) 
+    {
+        case 72: // Mũi tên lên
+            highlight = (highlight - 1 + menu_size) % menu_size;
+            break;
+        case 80: // Mũi tên xuống
+            highlight = (highlight + 1) % menu_size;
+            break;
+        case 13: // Phím Enter
+            option = highlight;
+            haveEntered = 1;
+            break;
+    }
+}
 
 void gotoxy(int x, int y) 
 {
@@ -31,6 +49,7 @@ void get_highlight(int highlight, const string which_Menu[], int menu_size)
 
 void SINHVIEN_menu(int& highlight, int option)
 {
+    system("cls");
     string option_menu_MONHOC[]
     {
         "1. Them sinh vien",
@@ -42,12 +61,16 @@ void SINHVIEN_menu(int& highlight, int option)
     while(true)
     {
         int haveEntered = 0;
-        system("cls");
+        // system("cls");
         get_highlight(highlight, option_menu_MONHOC, size(option_menu_MONHOC));
         moveByArrow(highlight, option, haveEntered, size(option_menu_MONHOC));
         if (haveEntered == 0)
         {
             continue;
+        }
+        else 
+        {
+            system("cls");
         }
         switch (option) 
         {
@@ -56,13 +79,15 @@ void SINHVIEN_menu(int& highlight, int option)
                 cout << "Them sinh vien" << endl;
                 inDanhSachSinhVien(DanhSach_SinhVien);
                 nhapSinhVien(DanhSach_SinhVien);
-                system("pause");
+                system("cls");
+                // system("pause");
                 break;
             case 1:
                 system("cls");
                 cout << "In Danh Sach Sinh Vien \n";
                 inDanhSachSinhVien(DanhSach_SinhVien);
                 system("pause");
+                system("cls");
                 break;
             case 2: // Sua thong tin sinh vien
                 system("cls");
@@ -70,6 +95,7 @@ void SINHVIEN_menu(int& highlight, int option)
                 inDanhSachSinhVien(DanhSach_SinhVien);
                 suaThongTin_SinhVien(DanhSach_SinhVien);    
                 system("pause");
+                system("cls");
                 break;
             case 3: // Xoa sinh vien
                 system("cls");
@@ -77,6 +103,7 @@ void SINHVIEN_menu(int& highlight, int option)
                 xoa_SinhVien(DanhSach_SinhVien);
                 cout << "Xoa sinh vien" << endl;
                 system("pause");
+                system("cls");
                 break;
 
             case 4:
@@ -86,7 +113,8 @@ void SINHVIEN_menu(int& highlight, int option)
     }
 }
 
-void MONHOC_Menu(int& highlight, int option, PTRMH& root) {
+void MonHoc_Menu(int& highlight, int option, PTRMH& root) {
+    docMonHocTuFile("list_MonHoc.txt", root);
     string option_menu_MONHOC[] = {
         "1. Them mon hoc",
         "2. In danh sach mon hoc",
@@ -112,25 +140,22 @@ void MONHOC_Menu(int& highlight, int option, PTRMH& root) {
                 nhapMonHoc(root);
                 system("pause");
                 break;
-            case 1: // In danh sách môn học từ file
+            case 1: // In danh sách môn học 
                 system("cls");
                 cout << "In danh sach mon hoc" << endl;
-                inDanhSachMonHocTuFile("list_MonHoc.txt");
+                inDanhSachMonHoc(root);
                 system("pause");
                 break;
             case 2: // Sửa thông tin môn học
                 system("cls");
                 cout << "Sua thong tin mon hoc" << endl;
-                inDanhSachMonHocTuFile("list_MonHoc.txt"); // In danh sách trước khi sửa
-                //cout << "Nhap Ma Mon Hoc can sua: ";
-                //cin.ignore();
-                //getline(cin, maMH);
-                suaMonHocVaGhiRaFile("list_MonHoc.txt");
+                inDanhSachMonHoc(root); // In danh sách trước khi sửa
+                suaMonHoc(root);
                 system("pause");
                 break;
             case 3: // Xóa môn học
                 system("cls");
-                inDanhSachMonHocTuFile("list_MonHoc.txt");; // In danh sách trước khi xóa
+                inDanhSachMonHoc(root); // In danh sách trước khi xóa
                 cout << "Nhap Ma Mon Hoc can xoa: ";
                 cin.ignore();
                 getline(cin, maMHToDelete);
@@ -138,6 +163,7 @@ void MONHOC_Menu(int& highlight, int option, PTRMH& root) {
                 system("pause");
                 break;
             case 4: // Thoát chức năng
+                ghiDanhSachMonHoc(root, "list_MonHoc.txt"); // Ghi dữ liệu vào file trước khi thoát
                 return;
             default:
                 return;
@@ -145,7 +171,69 @@ void MONHOC_Menu(int& highlight, int option, PTRMH& root) {
     }
 }
 
-void main_menu(int& highlight, int option, PTRMH& root) 
+void LTC_menu(int& highlight, int option, DSLTC& DSLTC,PTRMH &root)
+{
+    string option_menu_LTC[] =
+    {
+        "1. Xem danh sach Lop Tin Chi",
+        "2. Them Lop Tin Chi",
+        "3. Xoa Lop Tin Chi",
+        "4. Sua Lop Tin Chi",
+        "5. Thoat chuc nang"
+    };
+    string nienkhoa;
+    int hocky;
+    while (true)
+    {
+        int haveEntered = 0;
+        system("cls");
+        get_highlight(highlight, option_menu_LTC, size(option_menu_LTC));
+        moveByArrow(highlight, option, haveEntered, size(option_menu_LTC));
+
+
+        if (haveEntered == 0)
+        {
+            continue;
+        }
+        string nienKhoa;
+        int hocKy;
+        switch (option)
+        {
+        case 0: // Xem danh sach Lop Tin Chi
+            system("cls");
+            cout << "Nhap nien khoa: "; getline(cin, nienKhoa);
+            cout << "Hoc ky: "; cin >> hocKy;
+            cin.ignore();
+            InDanhSachLopTinChi(DSLTC,  root,  nienKhoa, hocKy);
+            system("pause");
+            break;
+        case 1: // Them Lop Tin Chi
+            system("cls");
+            cout << "Them Lop Tin Chi" << endl;
+            ThemLopTinChi(DSLTC, currentMaLopTC, root);
+            system("pause");
+            break;
+        case 2: // Xoa Lop Tin Chi
+            system("cls");
+            cout << "Xoa Lop Tin Chi" << endl;
+            XoaLopTinChi(DSLTC,root);
+            system("pause");
+            break;
+        case 3: // Sua Lop Tin Chi
+            system("cls");
+            cout << "Sua Lop Tin Chi" << endl;
+            HieuChinhLopTinChi(DSLTC, root);
+            system("pause");
+            break;
+        case 4: // Thoat chuc nang
+            return;
+        default:
+            return;
+        }
+    }
+}
+
+void main_menu(int& highlight, int option, PTRMH& root, DSLTC& dsLTC)
 {
     string mainMenuItems[]
     {
@@ -158,7 +246,7 @@ void main_menu(int& highlight, int option, PTRMH& root)
     while(true)
     {
         int haveEntered = 0;
-        system("cls");
+        // system("cls");
         get_highlight(highlight, mainMenuItems, size(mainMenuItems));
         moveByArrow(highlight, option, haveEntered, size(mainMenuItems));
         if (haveEntered == 0)
@@ -171,16 +259,18 @@ void main_menu(int& highlight, int option, PTRMH& root)
                 system("cls");
                 cout << "Danh sach sinh vien" << endl;
                 SINHVIEN_menu(highlight, option);
+                system("cls");
                 break;
             case 1:
                 system("cls");
                 cout << "Nhap Lop tin chi" << endl;
+                LTC_menu(highlight, option, dsLTC,root);
                 system("pause");
                 break;
             case 2:
                 system("cls");
                 cout << "Danh sach Mon Hoc" << endl;
-                MONHOC_Menu(highlight, option, root);
+                MonHoc_Menu(highlight, option, root);
                 system("pause");
                 break;
             case 3:
@@ -189,6 +279,7 @@ void main_menu(int& highlight, int option, PTRMH& root)
                 system("pause");
                 break;
             case 4:
+                // system("cls");
                 return;
             default: return;
         }

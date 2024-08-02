@@ -57,6 +57,14 @@ struct DSSV
 	SinhVien nodes[MaxSV];
 	int n = 0;
 };
+
+struct nodeMonHocTheoTen {
+	MonHoc mh;
+	nodeMonHocTheoTen* left;
+	nodeMonHocTheoTen* right;
+};
+
+typedef nodeMonHocTheoTen* PTRMHTheoTen;
 // int main () {
 // 	PTRMH tree_mh = NULL;
 // 	DSLTC dsltc;
