@@ -190,14 +190,37 @@ void nhapSinhVien(DSSV &DanhSach)
     ghiThongTinVaoFile("list_SinhVien.txt", DanhSach);
 }
 
+void xoa_SinhVien(DSSV &DanhSach)
+{
+    string MSSV;
+    cout << "Nhap MSSV: ";
+    getline(cin, MSSV);
+    for(int i = 0; i < DanhSach.n; i++)
+    {
+        if (DanhSach.nodes[i].MaSV == MSSV)
+        {
+            for (int j = i; j < DanhSach.n - 1; ++j)
+            {
+                DanhSach.nodes[j] = DanhSach.nodes[j + 1];
+            }
+            --DanhSach.n;
+            cout << "Da xoa sinh vien co MSSV: " << MSSV << endl;
+            system("cls");
+            return;
+        }
+        ghiThongTinVaoFile("list_SinhVien.txt", DanhSach);
+    }
+    cout << "Khong tim thay sinh vien co MSSV: " << MSSV << endl;
+}
+
 void suaThongTin_SinhVien(DSSV &DanhSach)
 {
     while (true) 
     {
         string MSSV;
         cout << "Nhap MSSV: ";
-        getline(cin, MSSV);
-
+        getOnlyWord_Number(MSSV, 15);
+        cout << endl;
         // Kiểm tra MSSV có trong danh sách không
         bool found = false;
         for (int i = 0; i < DanhSach.n; i++) 
@@ -224,38 +247,46 @@ void suaThongTin_SinhVien(DSSV &DanhSach)
                 cout << "Nhap thong tin moi cho sinh vien (de trong neu khong thay doi):\n";
 
                 cout << "Nhap Ma Lop (" << sv.MaLop << "): ";
-                string newMaLop;
-                getline(cin, newMaLop);
+                string newMaLop = sv.MaLop;
+                getOnlyWord_Number(newMaLop, 15, false);
+                cout << endl;
                 if (!newMaLop.empty()) sv.MaLop = newMaLop;
 
                 cout << "Nhap MSSV (" << sv.MaSV << "): ";
-                string newMaSV;
-                getline(cin, newMaSV);
-                if (!newMaSV.empty()) sv.MaSV = newMaSV;
-                if (check_TrungMaSV(DanhSach, newMaSV) == true) 
+                string newMaSV = sv.MaSV;
+                sv.MaSV = "";
+                getOnlyWord_Number(newMaSV, 15, false);
+                cout << endl;
+                // if (!newMaSV.empty()) sv.MaSV = newMaSV;
+                if (check_TrungMaSV(DanhSach, newMaSV) == true)
                 {
                     cout << "Trung ma voi sinh vien khac. Vui long nhap lai MSSV.\n";
                     continue;
                 }
+                if (!newMaSV.empty()) sv.MaSV = newMaSV;
 
                 cout << "Nhap ho (" << sv.Ho << "): ";
-                string newHo;
-                getline(cin, newHo);
+                string newHo = sv.Ho;
+                getOnlyWord_Space(newHo, 50, false);
+                cout << endl;
                 if (!newHo.empty()) sv.Ho = newHo;
 
                 cout << "Nhap ten (" << sv.Ten << "): ";
-                string newTen;
-                getline(cin, newTen);
+                string newTen = sv.Ten;
+                getOnlyWord(newTen, 10, false);
+                cout << endl;
                 if (!newTen.empty()) sv.Ten = newTen;
 
                 cout << "Nhap gioi tinh (" << sv.Phai << "): ";
-                string newPhai;
-                getline(cin, newPhai);
+                string newPhai = sv.Phai;
+                getOnlyWord(newPhai, 4, false);
+                cout << endl;
                 if (!newPhai.empty()) sv.Phai = newPhai;
 
                 cout << "Nhap so DT (" << sv.SoDT << "): ";
-                string newSoDT;
-                getline(cin, newSoDT);
+                string newSoDT = sv.SoDT;
+                getOnlyWord_Number(newSoDT, 10, false);
+                cout << endl;
                 if (!newSoDT.empty()) sv.SoDT = newSoDT;
 
                 ghiThongTinVaoFile("list_SinhVien.txt", DanhSach);
@@ -264,29 +295,6 @@ void suaThongTin_SinhVien(DSSV &DanhSach)
             }
         }
     }
-}
-
-void xoa_SinhVien(DSSV &DanhSach)
-{
-    string MSSV;
-    cout << "Nhap MSSV: ";
-    getline(cin, MSSV);
-    for(int i = 0; i < DanhSach.n; i++)
-    {
-        if (DanhSach.nodes[i].MaSV == MSSV)
-        {
-            for (int j = i; j < DanhSach.n - 1; ++j)
-            {
-                DanhSach.nodes[j] = DanhSach.nodes[j + 1];
-            }
-            --DanhSach.n;
-            cout << "Da xoa sinh vien co MSSV: " << MSSV << endl;
-            system("cls");
-            return;
-        }
-        ghiThongTinVaoFile("list_SinhVien.txt", DanhSach);
-    }
-    cout << "Khong tim thay sinh vien co MSSV: " << MSSV << endl;
 }
 
 void inDanhSachSinhVien(const DSSV &DanhSach) 

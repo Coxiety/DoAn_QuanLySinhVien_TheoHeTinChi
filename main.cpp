@@ -9,7 +9,7 @@ int main()
     PTRMHTheoTen rootTheoTen = nullptr;
     int currentMaLopTC = 1;
 
-    LoadData(dsltc, currentMaLopTC);
+    docDSLTCtuFile("DSLTC.txt", dsltc, currentMaLopTC);
     docMonHocTuFile("list_MonHoc.txt", root);
     docList_SinhVien("list_SinhVien.txt", DanhSach_SinhVien);
     sortDanhSachSinhVien(DanhSach_SinhVien);

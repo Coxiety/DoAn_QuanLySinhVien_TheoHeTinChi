@@ -1,8 +1,15 @@
 #pragma once
-string getOnlyWord_Number(string &input, int limit)//Chỉ lấy chử và số
+string getOnlyWord_Number(string &input, int limit, bool newInfo = true)//Chỉ lấy chử và số
 {
     char ch;
-    input.clear();
+    if (!newInfo)
+    {
+        cout << input;
+    }
+    else
+    {
+        input.clear();
+    }
     while (true) 
     {
         ch = _getch(); 
@@ -27,10 +34,17 @@ string getOnlyWord_Number(string &input, int limit)//Chỉ lấy chử và số
     return input;
 }
 
-string getOnlyWord_Number_forMaSV(string &input, int limit)//Chỉ lấy chử và số
+string getOnlyWord_Number_forMaSV(string &input, int limit, bool newInfo = true)//Chỉ lấy chử và số
 {
     char ch;
-    input.clear();
+    if (!newInfo)
+    {
+        cout << input;
+    }
+    else
+    {
+        input.clear();
+    }
     while (true) 
     {
         ch = _getch(); 
@@ -58,10 +72,17 @@ string getOnlyWord_Number_forMaSV(string &input, int limit)//Chỉ lấy chử v
     return input;
 }
 
-string getOnlyWord(string &input, int limit)//chỉ lấy chữ
+string getOnlyWord(string &input, int limit, bool newInfo = true)//chỉ lấy chữ
 {
     char ch;
-    input.clear();
+    if (!newInfo)
+    {
+        cout << input;
+    }
+    else
+    {
+        input.clear();
+    }
     while (true)
     {
         ch = _getch();
@@ -86,11 +107,18 @@ string getOnlyWord(string &input, int limit)//chỉ lấy chữ
     return input;
 }
 
-string getOnlyWord_Space(string &input, int limit)
+string getOnlyWord_Space(string &input, int limit, bool newInfo = true)
 {
     char ch;
     bool haveSpaced = false;// Bien de danh dau viec da cách hay chua
-    input.clear();
+    if (!newInfo)
+    {
+        cout << input;
+    }
+    else
+    {
+        input.clear();
+    }
     while (true)
     {
         ch = _getch();
@@ -124,10 +152,17 @@ string getOnlyWord_Space(string &input, int limit)
     return input;
 }
 
-string getOnlyNumber(string &input, int limit)
+string getOnlyNumber(string &input, int limit, bool newInfo = true)
 {
     char ch;
-    input.clear();
+    if (!newInfo)
+    {
+        cout << input;
+    }
+    else
+    {
+        input.clear();
+    }
     while (true)
     {
         ch = _getch();
