@@ -194,7 +194,7 @@ void xoa_SinhVien(DSSV &DanhSach)
 {
     string MSSV;
     cout << "Nhap MSSV: ";
-    getline(cin, MSSV);
+    getOnlyWord_Number_forMaSV(MSSV, 15, false);
     for(int i = 0; i < DanhSach.n; i++)
     {
         if (DanhSach.nodes[i].MaSV == MSSV)

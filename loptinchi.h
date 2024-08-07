@@ -1,4 +1,29 @@
 ﻿
+void LuuVaoFile(const string& tenFile, const DSLTC& dsltc) {
+    ofstream file(tenFile);
+    if (!file.is_open()) {
+        cout << "Khong the mo file " << tenFile << endl;
+        return;
+    }
+
+    for (int i = 0; i < dsltc.n; ++i) {
+        file << dsltc.nodes[i]->MaMH << endl;
+        file << dsltc.nodes[i]->NienKhoa << endl;
+        file << dsltc.nodes[i]->HocKy << endl;
+        file << dsltc.nodes[i]->Nhom << endl;
+        file << dsltc.nodes[i]->SoSVMin << endl;
+        file << dsltc.nodes[i]->SoSVMax << endl;
+        file << dsltc.nodes[i]->TrangThaiLTC << endl;
+        file << dsltc.nodes[i]->MaLopTC << endl;
+
+        if (i < dsltc.n - 1) {
+            file << endl;  // Thêm dòng trống giữa các lớp tín chỉ, ngoại trừ lớp cuối cùng
+        }
+    }
+
+    file.close();
+    cout << "Luu danh sach lop tin chi vao file " << tenFile << " thanh cong." << endl;
+}
 void HienThiDanhSachLopTinChi(const DSLTC& dsltc, PTRMH root) {
     if (dsltc.n == 0) {
         cout << "Khong co lop tin chi nao." << endl;
@@ -31,9 +56,13 @@ void HienThiDanhSachLopTinChi(const DSLTC& dsltc, PTRMH root) {
     }
 }
 void InDanhSachLopTinChi(const DSLTC& dsltc, PTRMH root, const string& nienKhoa, int hocKy) {
-    cout << "Danh sach lop tin chi cho nien khoa " << nienKhoa << " va hoc ky " << hocKy << ":" << endl;
+
+    bool found = false;
+
     for (int i = 0; i < dsltc.n; ++i) {
         if (dsltc.nodes[i]->NienKhoa == nienKhoa && dsltc.nodes[i]->HocKy == hocKy) {
+            found = true;
+            cout << "Danh sach lop tin chi cho nien khoa " << nienKhoa << " va hoc ky " << hocKy << ":" << endl;
             PTRMH mhNode = timKiemMonHoc(root, dsltc.nodes[i]->MaMH);
             string tenMH;
             if (mhNode != nullptr) {
@@ -54,36 +83,15 @@ void InDanhSachLopTinChi(const DSLTC& dsltc, PTRMH root, const string& nienKhoa,
             cout << "So SV toi da: " << dsltc.nodes[i]->SoSVMax << endl;
             cout << "Trang thai: " << (dsltc.nodes[i]->TrangThaiLTC == 1 ? "Mo" : "Huy") << endl;
             cout << "-----------------------------" << endl;
-            break;
         }
 
     }
-    cout << "Khong tim thay lop tin chi nao cho nien khoa " << nienKhoa << " va hoc ky " << hocKy << "." << endl;
-}
-// ghiThongTinVaoFile(const string& tenFile, const DSLTC& dsltc);
-
-void ghiThongTinVaoFile(const string& tenFile, const DSLTC& dsltc) {
-    ofstream file(tenFile);
-    if (!file.is_open()) {
-        cout << "Khong the mo file " << tenFile << endl;
+    if(!found){
+        cout << "Khong tim thay lop tin chi nao cho nien khoa " << nienKhoa << " va hoc ky " << hocKy << "." << endl;
         return;
     }
+    
 
-    for (int i = 0; i < dsltc.n; ++i) {
-        if (i > 0) {
-            file << endl << endl; // Thêm dòng trống giữa các lớp tín chỉ
-        }
-        file << dsltc.nodes[i]->MaMH << endl;
-        file << dsltc.nodes[i]->NienKhoa << endl;
-        file << dsltc.nodes[i]->HocKy << endl;
-        file << dsltc.nodes[i]->Nhom << endl;
-        file << dsltc.nodes[i]->SoSVMin << endl;
-        file << dsltc.nodes[i]->SoSVMax << endl;
-        file << dsltc.nodes[i]->TrangThaiLTC << endl;
-        file << dsltc.nodes[i]->MaLopTC << endl;
-    }
-
-    file.close();
 }
 void ThemLopTinChi(DSLTC& dsltc, int& currentMaLopTC, PTRMH root) {
     HienThiDanhSachLopTinChi(dsltc, root);
@@ -123,8 +131,8 @@ void ThemLopTinChi(DSLTC& dsltc, int& currentMaLopTC, PTRMH root) {
     for (int i = 0; i < dsltc.n; ++i) {
         if (dsltc.nodes[i]->NienKhoa == newLTC->NienKhoa &&
             dsltc.nodes[i]->HocKy == newLTC->HocKy &&
-            dsltc.nodes[i]->Nhom == newLTC->Nhom) {
-            cout << "Lop tin chi da ton tai cho nien khoa, hoc ky, nhom nay. Vui long nhap lai." << endl;
+            dsltc.nodes[i]->Nhom == newLTC->Nhom && dsltc.nodes[i]->MaMH == newLTC->MaMH) {
+            cout << "Lop tin chi da ton tai cho mon hoc, nien khoa, hoc ky, nhom nay. Vui long nhap lai." << endl;
             delete newLTC;
             currentMaLopTC--; // Giảm mã lớp tín chỉ vì không thêm được lớp mới
             return;
@@ -141,146 +149,150 @@ void ThemLopTinChi(DSLTC& dsltc, int& currentMaLopTC, PTRMH root) {
 
     newLTC->TrangThaiLTC = 1;
     newLTC->FirstDK = nullptr;
-    dsltc.nodes[dsltc.n++] = newLTC;
-
-    cout << "Them lop tin chi thanh cong!" << endl;
-    cout << "Thong tin lop tin chi vua them:\n";
-    cout << "Ma Lop TC: " << newLTC->MaLopTC << endl;
-    cout << "Ma MH: " << newLTC->MaMH << endl;
-    cout << "Ten MH: " << timKiemMonHoc(root, newLTC->MaMH)->mh.TenMH << endl;
-    cout << "Nien khoa: " << newLTC->NienKhoa << endl;
-    cout << "Hoc ky: " << newLTC->HocKy << endl;
-    cout << "Nhom: " << newLTC->Nhom << endl;
-    cout << "So SV toi thieu: " << newLTC->SoSVMin << endl;
-    cout << "So SV toi da: " << newLTC->SoSVMax << endl;
-    cout << "Trang thai: " << (newLTC->TrangThaiLTC == 1 ? "Mo" : "Huy") << endl;
-    ghiThongTinVaoFile("DSLTC.txt", dsltc);
+    char save;
+    cout << "Ban co muon  khong? (y/n): ";
+    cin >> save;
+    if (save == 'y' || save == 'Y') {
+        dsltc.nodes[dsltc.n++] = newLTC;
+        LuuVaoFile("DSLTC.txt", dsltc);
+        cout << "Them lop tin chi thanh cong!" << endl;
+    }
 }
 
 
 
 void XoaLopTinChi(DSLTC& dsltc, PTRMH root) {
     HienThiDanhSachLopTinChi(dsltc, root);
-
+    bool found = false;
     int maLopTC;
     cout << "Nhap ma lop tin chi can xoa: ";
     cin >> maLopTC;
     cin.ignore();
-
-
     for (int i = 0; i < dsltc.n; ++i) {
         if (dsltc.nodes[i]->MaLopTC == maLopTC) {
-            // Hiển thị thông tin lớp tín chỉ trước khi xóa
-            LopTinChi* ltc = dsltc.nodes[i];
-            cout << "Thong tin lop tin chi can xoa:\n";
-            cout << "Ma Lop TC: " << ltc->MaLopTC << endl;
-            cout << "Ma MH: " << ltc->MaMH << endl;
-            cout << "Ten MH: " << timKiemMonHoc(root, ltc->MaMH)->mh.TenMH << endl;
-            cout << "Nien khoa: " << ltc->NienKhoa << endl;
-            cout << "Hoc ky: " << ltc->HocKy << endl;
-            cout << "Nhom: " << ltc->Nhom << endl;
-            cout << "So SV toi thieu: " << ltc->SoSVMin << endl;
-            cout << "So SV toi da: " << ltc->SoSVMax << endl;
-            cout << "Trang thai: " << (ltc->TrangThaiLTC == 1 ? "Mo" : "Huy") << endl;
-
-            // Xóa lớp tín chỉ
-            delete dsltc.nodes[i];
-            dsltc.nodes[i] = dsltc.nodes[--dsltc.n]; // Di chuyển lớp tín chỉ cuối cùng vào vị trí của lớp tín chỉ bị xóa
-            cout << "Xoa lop tin chi thanh cong!" << endl;
-            ghiThongTinVaoFile("DSLTC.txt", dsltc);
-            system("pause");
-            break;
-        }
+            found = true;
+            cout << "Ban co that su muon xoa khong? (y/n): ";
+            char save;
+            cin >> save;
+            if (save == 'y' || save == 'Y') {
+                delete dsltc.nodes[i];
+                dsltc.nodes[i] = dsltc.nodes[--dsltc.n]; // Di chuyển lớp tín chỉ cuối cùng vào vị trí của lớp tín chỉ bị xóa
+                cout << "Xoa lop tin chi thanh cong!" << endl;
+                LuuVaoFile("DSLTC.txt", dsltc);
+            }
+            return;
+        }       
     }
-
-
-    cout << "Khong tim thay lop tin chi." << endl;
-    system("pause");
+    if (!found) {
+        cout << "Khong tim thay lop tin chi." << endl;
+        system("pause");
+        return;
+    }
+       
 
 }
 
 
 void HieuChinhLopTinChi(DSLTC& dsltc, PTRMH root) {
     HienThiDanhSachLopTinChi(dsltc, root);
-
+    bool found = false;
     int maLopTC;
     cout << "Nhap ma lop tin chi can hieu chinh: ";
     cin >> maLopTC;
     cin.ignore();
-
-    bool found = false;
     for (int i = 0; i < dsltc.n; ++i) {
         if (dsltc.nodes[i]->MaLopTC == maLopTC) {
-            LopTinChi& ltc = *dsltc.nodes[i];
             found = true;
-
+            LopTinChi *ltc = new LopTinChi();
+            ltc->MaLopTC = dsltc.nodes[i]->MaLopTC;
+            ltc->MaMH = dsltc.nodes[i]->MaMH;
+            ltc->NienKhoa = dsltc.nodes[i]->NienKhoa;
+            ltc->HocKy = dsltc.nodes[i]->HocKy;
+            ltc->Nhom = dsltc.nodes[i]->Nhom;
+            ltc->SoSVMin = dsltc.nodes[i]->SoSVMin;
+            ltc->SoSVMax = dsltc.nodes[i]->SoSVMax;
+            ltc->TrangThaiLTC = dsltc.nodes[i]->TrangThaiLTC;
+            ltc->FirstDK=dsltc.nodes[i]->FirstDK;
             cout << "Nhap thong tin moi cho lop tin chi (de trong neu khong thay doi):\n";
 
             // Nhập các thông tin khác
-            cout << "Nhap Nien Khoa (" << ltc.NienKhoa << "): ";
+            cout << "Nhap Nien Khoa (" << ltc->NienKhoa << "): ";
             string newNienKhoa;
             getline(cin, newNienKhoa);
-            if (!newNienKhoa.empty()) ltc.NienKhoa = newNienKhoa;
+            if (!newNienKhoa.empty()) ltc->NienKhoa = newNienKhoa;
 
-            cout << "Nhap Hoc Ky (" << ltc.HocKy << "): ";
+            cout << "Nhap Hoc Ky (" << ltc->HocKy << "): ";
             string newHocKy;
             getline(cin, newHocKy);
-            if (!newHocKy.empty()) ltc.HocKy = stoi(newHocKy);
+            if (!newHocKy.empty()) ltc->HocKy = stoi(newHocKy);
 
-            cout << "Nhap Nhom (" << ltc.Nhom << "): ";
+            cout << "Nhap Nhom (" << ltc->Nhom << "): ";
             string newNhom;
             getline(cin, newNhom);
-            if (!newNhom.empty()) ltc.Nhom = stoi(newNhom);
+            if (!newNhom.empty()) ltc->Nhom = stoi(newNhom);
 
-            cout << "Nhap So SV toi thieu (" << ltc.SoSVMin << "): ";
+            cout << "Nhap So SV toi thieu (" << ltc->SoSVMin << "): ";
             string newSoSVMin;
             getline(cin, newSoSVMin);
-            if (!newSoSVMin.empty()) ltc.SoSVMin = stoi(newSoSVMin);
+            if (!newSoSVMin.empty()) ltc->SoSVMin = stoi(newSoSVMin);
 
-            cout << "Nhap So SV toi da (" << ltc.SoSVMax << "): ";
+            cout << "Nhap So SV toi da (" << ltc->SoSVMax << "): ";
             string newSoSVMax;
             getline(cin, newSoSVMax);
-            if (!newSoSVMax.empty()) ltc.SoSVMax = stoi(newSoSVMax);
+            if (!newSoSVMax.empty()) ltc->SoSVMax = stoi(newSoSVMax);
 
-            cout << "Nhap Trang Thai Lop Tin Chi (0: huy, 1: mo) (" << ltc.TrangThaiLTC << "): ";
+            cout << "Nhap Trang Thai Lop Tin Chi (0: huy, 1: mo) (" << ltc->TrangThaiLTC << "): ";
             string newTrangThaiLTC;
             getline(cin, newTrangThaiLTC);
-            if (!newTrangThaiLTC.empty()) ltc.TrangThaiLTC = stoi(newTrangThaiLTC);
-            ghiThongTinVaoFile("DSLTC.txt", dsltc);
-            cout << "Thong tin lop tin chi da duoc cap nhat.\n";
+            if (!newTrangThaiLTC.empty()) ltc->TrangThaiLTC = stoi(newTrangThaiLTC);
+            char save;
+            cout << "Ban co muon luu thay doi khong? (y/n): ";
+            cin >> save;
+            if(save == 'y' || save == 'Y'){
+                //delete [] dsltc.nodes[i];
+                dsltc.nodes[i] = ltc;
+                LuuVaoFile("DSLTC.txt",dsltc);
+            }
             break;
         }
     }
 
     if (!found) {
         cout << "Khong tim thay lop tin chi voi ma " << maLopTC << "\n";
+        return;
     }
-}
 
-void docDSLTCtuFile(const string& tenFile, DSLTC& dsltc, int& currentMaLopTC) {
-    ifstream file(tenFile);
-    if (!file.is_open()) {
+}
+void DocLTC(const string& tenFile, DSLTC& dsltc, int& currentMaLopTC) {
+    ifstream inFile(tenFile);
+
+    if (!inFile.is_open()) {
         cout << "Khong the mo file " << tenFile << endl;
         return;
     }
 
-
-
-    while (!file.eof()) {
+    currentMaLopTC = 1;
+    dsltc.n = 0;
+    while (!inFile.eof()) {
         dsltc.nodes[dsltc.n] = new LopTinChi;
-        getline(file, dsltc.nodes[dsltc.n]->MaMH);
+
+        getline(inFile, dsltc.nodes[dsltc.n]->MaMH);
         if (dsltc.nodes[dsltc.n]->MaMH.empty()) {
             delete dsltc.nodes[dsltc.n];
             break;
         }
-        getline(file, dsltc.nodes[dsltc.n]->NienKhoa);
-        file >> dsltc.nodes[dsltc.n]->HocKy;
-        file >> dsltc.nodes[dsltc.n]->Nhom;
-        file >> dsltc.nodes[dsltc.n]->SoSVMin;
-        file >> dsltc.nodes[dsltc.n]->SoSVMax;
-        file >> dsltc.nodes[dsltc.n]->TrangThaiLTC;
-        file >> dsltc.nodes[dsltc.n]->MaLopTC;
-        file.ignore();
+        getline(inFile, dsltc.nodes[dsltc.n]->NienKhoa);
+        inFile >> dsltc.nodes[dsltc.n]->HocKy;
+        inFile >> dsltc.nodes[dsltc.n]->Nhom;
+        inFile >> dsltc.nodes[dsltc.n]->SoSVMin;
+        inFile >> dsltc.nodes[dsltc.n]->SoSVMax;
+        inFile >> dsltc.nodes[dsltc.n]->TrangThaiLTC;
+        inFile >> dsltc.nodes[dsltc.n]->MaLopTC;
+        inFile.ignore(); // Bỏ qua ký tự newline sau khi đọc số nguyên
+
+        // Bỏ qua dòng trống
+        string temp;
+        getline(inFile, temp);
 
         if (dsltc.nodes[dsltc.n]->MaLopTC >= currentMaLopTC) {
             currentMaLopTC = dsltc.nodes[dsltc.n]->MaLopTC + 1;
@@ -289,8 +301,11 @@ void docDSLTCtuFile(const string& tenFile, DSLTC& dsltc, int& currentMaLopTC) {
         dsltc.n++;
     }
 
-    file.close();
+    inFile.close();
+    cout << "Tai du lieu thanh cong!" << endl;
 }
+
+
 
 
 void HuyLopTinChi(DSLTC& dsltc) {

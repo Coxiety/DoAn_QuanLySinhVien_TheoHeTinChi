@@ -184,3 +184,47 @@ string getOnlyNumber(string &input, int limit, bool newInfo = true)
     }
     return input;
 }
+// bat loi lop tin chi
+void getNumber_dash(string &input,int limit){
+    int index = 0;
+    char ch;
+    while(true){
+        ch = _getch();
+        if(ch==13 && !input.empty()){
+            break;
+        }
+        if(isdigit(ch)&&size(input)<limit){
+            index++;
+            if(index==5){
+                input += "-";
+                cout<<"-";
+            }
+            input += ch;
+            cout<<ch;
+        }
+        else if (ch == 8 && !input.empty())
+        {
+            input.pop_back();
+            index--;
+            cout << "\b \b";
+        }
+    }
+}
+void batHocKy(string &input){
+    char ch;
+    while(true){
+        ch = _getch();
+        if(ch==13 && !input.empty()){
+            break;
+        }
+        if(ch > '0' && ch < '4'){
+            input+=ch;
+            cout<<ch;
+        }
+        else if (ch == 8 && !input.empty())
+        {
+            input.pop_back();
+            cout << "\b \b";
+        }
+    }
+}

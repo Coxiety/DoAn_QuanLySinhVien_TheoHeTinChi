@@ -178,51 +178,67 @@ void MonHoc_Menu(int& highlight, int option, PTRMH& root, PTRMHTheoTen rootTheoT
     }
 }
 
-void LTC_menu(int& highlight, int option, PTRMH& root,DSLTC dsltc) {
-
-    string option_menu_MONHOC[] = {
-        "1. Danh sach lop tin chi",
-        "2. Them lop tin chi",
-        "3. Sua lop tin chi",
-        "4. Xoa lop tin chi",
+void LTC_menu(int& highlight, int option, DSLTC& DSLTC,PTRMH &root)
+{
+    system("cls");
+    string option_menu_LTC[] =
+    {
+        "1. Xem danh sach Lop Tin Chi",
+        "2. Them Lop Tin Chi",
+        "3. Xoa Lop Tin Chi",
+        "4. Sua Lop Tin Chi",
         "5. Thoat chuc nang"
     };
+    string nienkhoa;
+    int hocky;
+    while (true)
+    {
+        int haveEntered = 0;
+        // system("cls");
+        get_highlight(highlight, option_menu_LTC, size(option_menu_LTC));
+        moveByArrow(highlight, option, haveEntered, size(option_menu_LTC));
 
-    while (true) {
-        int haveEntered = 0; // Khởi tạo biến ngay trong vòng lặp
-        system("cls");
-        get_highlight(highlight, option_menu_MONHOC, static_cast<int>(size(option_menu_MONHOC)));
-        moveByArrow(highlight, option, haveEntered, static_cast<int>(size(option_menu_MONHOC)));
-        if (haveEntered == 0) {
+
+        if (haveEntered == 0)
+        {
             continue;
         }
-
-        string nienKhoa; int hocKy;
-        switch (option) {
-        case 0: // in ltc
+        string nienKhoa;
+        string hocKy;
+        switch (option)
+        {
+        
+        case 0: // Xem danh sach Lop Tin Chi
             system("cls");
-
-            cout << "Nhap nien khoa: "; getline(cin, nienKhoa);
-            cout << "Nhap hoc ky: "; cin >> hocKy;
-            InDanhSachLopTinChi(dsltc, root, nienKhoa, hocKy);
+            cout << "Nhap nien khoa: "; getNumber_dash(nienKhoa,9);
+            cout<<endl;
+            cout << "Hoc ky: "; batHocKy(hocKy);
+            InDanhSachLopTinChi(DSLTC,  root,  nienKhoa, stoi(hocKy));
             system("pause");
-            break;
-        case 1: // them ltc
             system("cls");
-            ThemLopTinChi(dsltc, currentMaLopTC, root);
-            system("pause");
             break;
-        case 2: // Sua lop
+        case 1: // Them Lop Tin Chi
             system("cls");
-            HieuChinhLopTinChi(dsltc, root);
+            cout << "Them Lop Tin Chi" << endl;
+            ThemLopTinChi(DSLTC, currentMaLopTC, root);
             system("pause");
-            break;
-        case 3: // Xóa lop
             system("cls");
-            XoaLopTinChi(dsltc, root);
-            system("pause");
             break;
-        case 4: // Thoát chức năng
+        case 2: // Xoa Lop Tin Chi
+            system("cls");
+            cout << "Xoa Lop Tin Chi" << endl;
+            XoaLopTinChi(DSLTC,root);
+            system("pause");
+            system("cls");
+            break;
+        case 3: // Sua Lop Tin Chi
+            system("cls");
+            cout << "Sua Lop Tin Chi" << endl;
+            HieuChinhLopTinChi(DSLTC, root);
+            system("pause");
+            system("cls");
+            break;
+        case 4: // Thoat chuc nang
             return;
         default:
             return;
@@ -261,7 +277,7 @@ void main_menu(int& highlight, int option, PTRMH& root, DSLTC& dsLTC, PTRMHTheoT
             case 1:
                 system("cls");
                 cout << "Nhap Lop tin chi" << endl;
-                LTC_menu(highlight, option, root, dsLTC);
+                LTC_menu(highlight, option, dsLTC,root);
                 system("cls");
                 break;
             case 2:
