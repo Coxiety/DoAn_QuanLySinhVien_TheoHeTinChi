@@ -86,6 +86,13 @@ void SetColor(WORD color)
 
     SetConsoleTextAttribute(hConsoleOutput, wAttributes);
 }
+void getConsoleSize(int &cols, int &rows)
+{
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+    cols = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+}
 void SetBGColor(WORD color)
 {
     HANDLE hConsoleOutput;

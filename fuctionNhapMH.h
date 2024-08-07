@@ -175,48 +175,40 @@ void suaMonHoc(PTRMH& root) {
 void docMonHocTuFile(const string& tenFile, PTRMH& root) {
     ifstream file(tenFile);
     if (!file.is_open()) {
-        cout << "Khong the mo file " << tenFile << endl;
+        cerr << "Khong the mo file " << tenFile << endl;
         return;
     }
 
-    MonHoc mh;
-    string line;
+    string maMH, tenMH, line;
+    int stclt, stcth;
 
-    while (getline(file, mh.MaMH)) {
-        // Xóa khoảng trắng đầu và cuối của MaMH
-        mh.MaMH.erase(0, mh.MaMH.find_first_not_of(' '));
-        mh.MaMH.erase(mh.MaMH.find_last_not_of(' ') + 1);
-
-        if (!getline(file, mh.TenMH)) break; // Đọc dòng tiếp theo
-        // Xóa khoảng trắng đầu và cuối của TenMH
-        mh.TenMH.erase(0, mh.TenMH.find_first_not_of(' '));
-        mh.TenMH.erase(mh.TenMH.find_last_not_of(' ') + 1);
-
-        if (!getline(file, line)) break; // Đọc dòng tiếp theo
+    while (getline(file, maMH)) {
+        getline(file, tenMH);
+        getline(file, line);
         istringstream iss(line);
-
-        int stclt, stcth;
         if (!(iss >> stclt >> stcth)) {
             cerr << "Loi: Du lieu STCLT va STCTH khong hop le" << endl;
-            continue; // Bỏ qua dòng này và tiếp tục với dòng tiếp theo
+            continue;
         }
 
-        mh.STCLT = stclt;
-        mh.STCTH = stcth;
-
-        themMonHoc(root, mh); // Thêm môn học vào cây
+        MonHoc mh = { maMH, tenMH, stclt, stcth };
+        themMonHoc(root, mh);
     }
 
-    file.close(); // Đóng tệp sau khi đã đọc xong
+    file.close();
 }
-void ghiDanhSach(PTRMH node, ofstream& file) 
-{
-    if (node) {
-        ghiDanhSach(node->left, file);
-        file << node->mh.MaMH << endl;
-        file << node->mh.TenMH << endl;
-        file << node->mh.STCLT << " " << node->mh.STCTH;
-        ghiDanhSach(node->right, file);
+void ghiDanhSach(PTRMH root, ofstream& file) {
+    if (root != nullptr) {
+        // Ghi thông tin môn học hiện tại
+        file << root->mh.MaMH << endl;
+        file << root->mh.TenMH << endl;
+        file << root->mh.STCLT << " " << root->mh.STCTH << endl;
+
+        // Ghi cây con trái
+        ghiDanhSach(root->left, file);
+
+        // Ghi cây con phải
+        ghiDanhSach(root->right, file);
     }
 }
 // Hàm ghi môn học ra file mà không xóa dữ liệu cũ và không chèn lên dữ liệu cũ
@@ -265,8 +257,7 @@ void nhapMonHoc(PTRMH& root) {
 }
 // Hàm ghi cây nhị phân vào file theo thứ tự trung tố
 void ghiMonHocTheoThuTu(PTRMHTheoTen node, ofstream& file) {
-    if (node != nullptr) 
-    {
+    if (node != nullptr) {
         ghiMonHocTheoThuTu(node->left, file); // Duyệt trái
         file << node->mh.MaMH << endl;
         file << node->mh.TenMH << endl;
@@ -300,10 +291,10 @@ PTRMH timNhoNhat(PTRMH node) {
 PTRMH xoaNode(PTRMH root, const string& maMH) {
     if (root == nullptr) return nullptr;
     if (maMH < root->mh.MaMH) {
-        root->left = xoaMonHoc(root->left, maMH);
+        root->left = xoaNode(root->left, maMH);
     }
     else if (maMH > root->mh.MaMH) {
-        root->right = xoaMonHoc(root->right, maMH);
+        root->right = xoaNode(root->right, maMH);
     }
     else {
         if (root->left == nullptr) {
@@ -321,7 +312,7 @@ PTRMH xoaNode(PTRMH root, const string& maMH) {
             temp = temp->left;
         }
         root->mh = temp->mh;
-        root->right = xoaMonHoc(root->right, root->mh.MaMH);
+        root->right = xoaNode(root->right, root->mh.MaMH);
     }
     return root;
 }
@@ -372,3 +363,4 @@ PTRMH xoaMonHoc(PTRMH root, const string& maMH) {
     }
     return root;
 }
+

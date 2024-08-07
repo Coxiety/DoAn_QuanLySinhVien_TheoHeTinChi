@@ -2,6 +2,66 @@
 int currentMaLopTC;
 DSSV DanhSach_SinhVien;
 
+void drawMenu(int highlight, const string options[], int menuSize)
+{
+    // Clear the console
+    // system("cls");
+
+    int cols, rows;
+    getConsoleSize(cols, rows);
+
+    int menuWidth = 30;
+    int menuHeight = menuSize * 2;
+
+    // Calculate top left corner to center the menu
+    int startX = (cols - menuWidth) / 2;
+    int startY = (rows - menuHeight) / 2;
+
+    // Draw the menu
+    for (int i = 0; i < menuSize; ++i)
+    {
+        // Highlight selected option
+        if (i == highlight)
+        {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); // Highlight color
+        }
+        else
+        {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // Normal color
+        }
+
+        // Draw the outline
+        for (int j = 0; j < menuWidth; ++j)
+        {
+            gotoxy(startX + j, startY + i * 2);
+            cout << "-";
+        }
+        for (int j = 0; j < menuWidth; ++j)
+        {
+            gotoxy(startX + j, startY + i * 2 + 1);
+            cout << " ";
+        }
+        gotoxy(startX, startY + i * 2 + 1);
+        cout << "|";
+        gotoxy(startX + menuWidth - 1, startY + i * 2 + 1);
+        cout << "|";
+
+        // Draw the menu text
+        gotoxy(startX + 3, startY + i * 2 + 1);
+        cout << options[i];
+    }
+    for (int j = 0; j < menuWidth; ++j)
+    {
+        gotoxy(startX + j, startY + menuSize * 2);
+        cout << "_";
+    }
+    // Reset text attribute
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+
+    // Reset cursor position
+    gotoxy(0, startY + menuHeight + 1);
+}
+
 void moveByArrow(int& highlight, int& option, int& haveEntered, int menu_size)
 {
     int key = _getch();
@@ -259,8 +319,8 @@ void main_menu(int& highlight, int option, PTRMH& root, DSLTC& dsLTC, PTRMHTheoT
     while(true)
     {
         int haveEntered = 0;
-        // system("cls");
-        get_highlight(highlight, mainMenuItems, size(mainMenuItems));
+        drawMenu(highlight, mainMenuItems, size(mainMenuItems));
+        // get_highlight(highlight, mainMenuItems, size(mainMenuItems));
         moveByArrow(highlight, option, haveEntered, size(mainMenuItems));
         if (haveEntered == 0)
         {
