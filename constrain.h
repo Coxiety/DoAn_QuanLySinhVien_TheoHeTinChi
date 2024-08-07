@@ -187,37 +187,41 @@ string getOnlyNumber(string &input, int limit, bool newInfo = true)
 // bat loi lop tin chi
 void getNumber_dash(string &input,int limit){
     int index = 0;
+    input.clear();
     char ch;
     while(true){
         ch = _getch();
         if(ch==13 && !input.empty()){
+            index = 0;
             break;
         }
         if(isdigit(ch)&&size(input)<limit){
-            index++;
-            if(index==5){
+            if(index==4){
                 input += "-";
+                index++;
                 cout<<"-";
             }
             input += ch;
+            index++;
             cout<<ch;
         }
         else if (ch == 8 && !input.empty())
-        {
-            input.pop_back();
+        {   
             index--;
+            input.pop_back();
             cout << "\b \b";
         }
     }
 }
-void batHocKy(string &input){
+void batHocKy(string &input, int limit)
+{
     char ch;
     while(true){
         ch = _getch();
         if(ch==13 && !input.empty()){
             break;
         }
-        if(ch > '0' && ch < '4'){
+        if(ch > '0' && ch < '4' && size(input) < limit){
             input+=ch;
             cout<<ch;
         }

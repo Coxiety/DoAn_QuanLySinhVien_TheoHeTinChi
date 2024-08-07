@@ -212,7 +212,7 @@ void LTC_menu(int& highlight, int option, DSLTC& DSLTC,PTRMH &root)
             system("cls");
             cout << "Nhap nien khoa: "; getNumber_dash(nienKhoa,9);
             cout<<endl;
-            cout << "Hoc ky: "; batHocKy(hocKy);
+            cout << "Hoc ky: "; batHocKy(hocKy, 1);
             InDanhSachLopTinChi(DSLTC,  root,  nienKhoa, stoi(hocKy));
             system("pause");
             system("cls");
