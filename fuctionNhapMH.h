@@ -22,6 +22,7 @@ void inDanhSachMonHoc(PTRMH root) {
         inCay(root);
     }
 }
+
 void themMonHocTheoTen(PTRMHTheoTen& root, MonHoc mh) {
     if (root == nullptr) {
         root = new nodeMonHocTheoTen{ mh, nullptr, nullptr };
@@ -316,6 +317,19 @@ PTRMH xoaNode(PTRMH root, const string& maMH) {
     }
     return root;
 }
+
+DSLTC dsltc;
+int currentMaLopTC = 1;
+bool isMaMHInDSLTC(const string& maMH) {
+    for (int i = 0; i < dsltc.n; i++) {
+        cout << "Checking MaMH in DSLTC: " << dsltc.nodes[i]->MaMH << endl; // Debug statement
+        if (dsltc.nodes[i]->MaMH == maMH) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Hàm xóa môn học với xác nhận từ người dùng
 PTRMH xoaMonHoc(PTRMH root, const string& maMH) {
     if (root == nullptr) {
@@ -323,39 +337,48 @@ PTRMH xoaMonHoc(PTRMH root, const string& maMH) {
         return nullptr;
     }
 
-    // Tìm nút cần xóa
+    // Check if MaMH is in any open LopTinChi
+    cout << "Checking if MaMH exists in DSLTC..." << endl; // Debug statement
+    if (isMaMHInDSLTC(maMH)) {
+        cout << "Da co lop tinh chi dang mo trung voi ma mon hoc nay.\n";
+        return root; // Exit without deleting
+    }
+
+    // Find the node to delete
     if (maMH < root->mh.MaMH) {
+        cout << "Going left, current node MaMH: " << root->mh.MaMH << endl; // Debug statement
         root->left = xoaMonHoc(root->left, maMH);
     }
     else if (maMH > root->mh.MaMH) {
+        cout << "Going right, current node MaMH: " << root->mh.MaMH << endl; // Debug statement
         root->right = xoaMonHoc(root->right, maMH);
     }
     else {
-        // Xác nhận từ người dùng trước khi xóa
+        // Confirm with the user before deleting
         char confirm;
         cout << "Ban co chac chan muon xoa mon hoc voi ma " << maMH << " khong? (y/n): ";
         cin >> confirm;
-        cin.ignore(); // Bỏ qua ký tự newline
+        cin.ignore(); // Ignore newline character
 
         if (confirm == 'y' || confirm == 'Y') {
-            // Xóa nút
+            // Delete the node
             if (root->left == nullptr) {
                 PTRMH temp = root->right;
                 delete root;
-                cout << "Xoa mon hoc thanh cong.\n"; // Thông báo thành công
+                cout << "Xoa mon hoc thanh cong.\n"; // Success message
                 return temp;
             }
             else if (root->right == nullptr) {
                 PTRMH temp = root->left;
                 delete root;
-                cout << "Xoa mon hoc thanh cong.\n"; // Thông báo thành công
+                cout << "Xoa mon hoc thanh cong.\n"; // Success message
                 return temp;
             }
 
             PTRMH temp = timNhoNhat(root->right);
             root->mh = temp->mh;
             root->right = xoaMonHoc(root->right, root->mh.MaMH);
-            cout << "Xoa mon hoc thanh cong.\n"; // Thông báo thành công
+            cout << "Xoa mon hoc thanh cong.\n"; // Success message
         }
         else {
             cout << "Xoa mon hoc bi huy.\n";
@@ -363,4 +386,3 @@ PTRMH xoaMonHoc(PTRMH root, const string& maMH) {
     }
     return root;
 }
-

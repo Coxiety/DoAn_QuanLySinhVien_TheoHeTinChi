@@ -1,8 +1,7 @@
 #pragma once
-int currentMaLopTC;
 DSSV DanhSach_SinhVien;
 
-void drawMenu(int highlight, const string options[], int menuSize)
+void drawMenu_MainMenu(int highlight, int menuSize)
 {
     // Clear the console
     // system("cls");
@@ -46,9 +45,9 @@ void drawMenu(int highlight, const string options[], int menuSize)
         gotoxy(startX + menuWidth - 1, startY + i * 2 + 1);
         cout << "|";
 
-        // Draw the menu text
-        gotoxy(startX + 3, startY + i * 2 + 1);
-        cout << options[i];
+        // // Draw the menu text
+        // gotoxy(startX + 3, startY + i * 2 + 1);
+        // cout << options[i];
     }
     for (int j = 0; j < menuWidth; ++j)
     {
@@ -247,7 +246,9 @@ void LTC_menu(int& highlight, int option, DSLTC& DSLTC,PTRMH &root)
         "2. Them Lop Tin Chi",
         "3. Xoa Lop Tin Chi",
         "4. Sua Lop Tin Chi",
-        "5. Thoat chuc nang"
+        "5. Huy Lop Tin Chi",
+        "6. Dang Ky Lop Tin Chi",
+        "7.Thoat chuc nang"
     };
     string nienkhoa;
     int hocky;
@@ -272,7 +273,8 @@ void LTC_menu(int& highlight, int option, DSLTC& DSLTC,PTRMH &root)
             system("cls");
             cout << "Nhap nien khoa: "; getNumber_dash(nienKhoa,9);
             cout<<endl;
-            cout << "Hoc ky: "; batHocKy(hocKy, 1);
+            cout << "Hoc ky: "; batHocKy(hocKy,1);
+            cout<<endl;
             InDanhSachLopTinChi(DSLTC,  root,  nienKhoa, stoi(hocKy));
             system("pause");
             system("cls");
@@ -298,7 +300,22 @@ void LTC_menu(int& highlight, int option, DSLTC& DSLTC,PTRMH &root)
             system("pause");
             system("cls");
             break;
-        case 4: // Thoat chuc nang
+
+        case 4: // Huy lop tin chi
+            system("cls");
+            cout<<"Huy Lop Tin Chi" << endl;
+            HuyLopTinChi(DSLTC);
+            system("pause");
+            system("cls");
+            break;
+        case 5:
+            system("cls");
+            cout<<"Dang Ky Lop Tin Chi" << endl;
+            DangKyLopTinChi(DSLTC,root,DanhSach_SinhVien);
+            system("pause");
+            system("cls");
+            break;
+        case 6:
             return;
         default:
             return;
@@ -319,8 +336,8 @@ void main_menu(int& highlight, int option, PTRMH& root, DSLTC& dsLTC, PTRMHTheoT
     while(true)
     {
         int haveEntered = 0;
-        drawMenu(highlight, mainMenuItems, size(mainMenuItems));
-        // get_highlight(highlight, mainMenuItems, size(mainMenuItems));
+        drawMenu_MainMenu(highlight, size(mainMenuItems));
+        get_highlight(highlight, mainMenuItems, size(mainMenuItems));
         moveByArrow(highlight, option, haveEntered, size(mainMenuItems));
         if (haveEntered == 0)
         {
