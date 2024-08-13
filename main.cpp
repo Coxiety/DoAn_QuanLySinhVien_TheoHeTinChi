@@ -9,6 +9,7 @@ int main()
     PTRMHTheoTen rootTheoTen = nullptr;
     int currentMaLopTC = 1;
 
+    ShowConsoleCursor(false);
     DocLTC("DSLTC.txt", dsltc, currentMaLopTC);
     docMonHocTuFile("list_MonHoc.txt", root);
     docList_SinhVien("list_SinhVien.txt", DanhSach_SinhVien);

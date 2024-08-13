@@ -81,14 +81,17 @@ void khung_bao_loi(string bao_loi, int x, int y, int w, int h) {
 }
 
 void khung_lua_chon(int x, int y, int w, int h) {
-    for (int i = x; i <= x + w; ++i) {
-        for (int iy = y; iy <= y + h; ++iy) {
+    for (int i = x; i <= x + w; ++i) 
+    {
+        for (int iy = y; iy <= y + h; ++iy) 
+        {
             gotoxy(x, iy);
             cout << char(179);
             gotoxy(x + w, iy);
             cout << char(179);
         }
     }
+    
     for (int ix = x; ix <= x + w; ++ix) {
         gotoxy(ix, y);
         cout << char(196);
