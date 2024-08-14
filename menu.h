@@ -101,8 +101,14 @@ void get_highlight(int highlight, const string which_Menu[], int menu_size)
 void SINHVIEN_menu(int &highlight, int option)
 {
     system("cls");
-    string option_menu_MONHOC[]{"1. Them sinh vien", "2. In danh sach sinh vien", "3. Sua thong tin sinh vien",
-                                "4. Xoa sinh vien", "5. Thoat chuc nang"};
+    string option_menu_MONHOC[]
+    {
+        "1. Them sinh vien", 
+        "2. In danh sach sinh vien", 
+        "3. Sua thong tin sinh vien",
+        "4. Xoa sinh vien", 
+        "5. Thoat chuc nang"
+    };
     while (true)
     {
         int haveEntered = 0;
@@ -122,7 +128,6 @@ void SINHVIEN_menu(int &highlight, int option)
         case 0: // Them sinh vien
             system("cls");
             cout << "Them sinh vien" << endl;
-            inDanhSachSinhVien(DanhSach_SinhVien);
             nhapSinhVien(DanhSach_SinhVien);
             system("cls");
             // system("pause");
@@ -137,14 +142,12 @@ void SINHVIEN_menu(int &highlight, int option)
         case 2: // Sua thong tin sinh vien
             system("cls");
             cout << "Sua thong tin sinh vien" << endl;
-            inDanhSachSinhVien(DanhSach_SinhVien);
             suaThongTin_SinhVien(DanhSach_SinhVien);
             system("pause");
             system("cls");
             break;
         case 3: // Xoa sinh vien
             system("cls");
-            inDanhSachSinhVien(DanhSach_SinhVien);
             xoa_SinhVien(DanhSach_SinhVien);
             cout << "Xoa sinh vien" << endl;
             system("pause");
@@ -161,8 +164,14 @@ void MonHoc_Menu(int &highlight, int option, PTRMH &root, PTRMHTheoTen rootTheoT
 {
     system("cls");
     saoChepCay(root, rootTheoTen);
-    string option_menu_MONHOC[] = {"1. Them mon hoc", "2. In danh sach mon hoc", "3. Sua thong tin mon hoc",
-                                   "4. Xoa mon hoc", "5. Thoat chuc nang"};
+    string option_menu_MONHOC[] = 
+    {
+        "1. Them mon hoc", 
+        "2. In danh sach mon hoc", 
+        "3. Sua thong tin mon hoc",
+        "4. Xoa mon hoc", 
+        "5. Thoat chuc nang"
+    };
 
     while (true)
     {
@@ -225,9 +234,16 @@ void MonHoc_Menu(int &highlight, int option, PTRMH &root, PTRMHTheoTen rootTheoT
 void LTC_menu(int &highlight, int option, DSLTC &DSLTC, PTRMH &root)
 {
     system("cls");
-    string option_menu_LTC[] = {
-        "1. Xem danh sach Lop Tin Chi", "2. Them Lop Tin Chi",    "3. Xoa Lop Tin Chi", "4. Sua Lop Tin Chi",
-        "5. Huy Lop Tin Chi",           "6. Dang Ky Lop Tin Chi", "7.Thoat chuc nang"};
+    string option_menu_LTC[] = 
+    {
+        "1. Xem danh sach Lop Tin Chi", 
+        "2. Them Lop Tin Chi",    
+        "3. Xoa Lop Tin Chi", 
+        "4. Sua Lop Tin Chi",
+        "5. Huy Lop Tin Chi",           
+        "6. Dang Ky Lop Tin Chi", 
+        "7.Thoat chuc nang"
+    };
     string nienkhoa;
     int hocky;
     while (true)
@@ -305,8 +321,14 @@ void LTC_menu(int &highlight, int option, DSLTC &DSLTC, PTRMH &root)
 void main_menu(int &highlight, int option, PTRMH &root, DSLTC &dsLTC, PTRMHTheoTen &rootTheoTen)
 {
     system("cls");
-    string mainMenuItems[]{"1. Danh sach sinh vien", "2. Lop tin chi", "3. Danh sach Mon Hoc",
-                           "4. Nhap diem cho mon hoc", "5. Ket thuc chuong trinh"};
+    string mainMenuItems[]
+    {
+        "1. Danh sach sinh vien", 
+        "2. Lop tin chi", 
+        "3. Danh sach Mon Hoc",
+        "4. Nhap diem cho mon hoc", 
+        "5. Ket thuc chuong trinh"
+    };
     while (true)
     {
 

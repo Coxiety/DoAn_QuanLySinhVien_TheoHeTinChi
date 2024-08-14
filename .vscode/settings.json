@@ -1,12 +1,19 @@
 {
-    "files.associations": {
-        "ostream": "cpp",
-        "iostream": "cpp",
-        "xutility": "cpp",
-        "xstring": "cpp",
-        "initializer_list": "cpp",
-        "utility": "cpp",
-        "string": "cpp",
-        "functional": "cpp"
-    }
+  "files.associations": {
+    "ostream": "cpp",
+    "iostream": "cpp",
+    "xutility": "cpp",
+    "xstring": "cpp",
+    "initializer_list": "cpp",
+    "utility": "cpp",
+    "string": "cpp",
+    "functional": "cpp",
+    "xlocale": "cpp"
+  },
+  "workbench.colorTheme": "Default Dark Modern",
+  "prettier.useEditorConfig": true,
+  "prettier.semi": false,
+  "prettier.bracketSpacing": false,
+  "prettier.enable": false,
+  "prettier.arrowParens": "avoid"
 }
