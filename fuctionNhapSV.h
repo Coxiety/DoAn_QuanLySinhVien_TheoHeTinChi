@@ -113,18 +113,35 @@ void ghiThongTinVaoFile(const string &tenFile, DSSV &DanhSach)
 // Hàm sử dụng để dùng trong các chức năng nhập
 void inDanhSachSinhVienChoCacHam(const DSSV &DanhSach, string maLopCanTim)
 {
+    const int width = 20; // Đặt chiều rộng cột
+    cout << setw(width) << left << "MSSV"
+        << setw(width) << left << "Ho"
+        << setw(width) << left << "Ten"
+        << setw(width) << left << "Gioi tinh"
+        << setw(width) << left << "So DT"
+        << setw(width) << left << "Ma Lop"
+        << endl;
+    // In đường viền dưới tiêu đề
+    cout << setfill('-')
+        << setw(width) << "-"
+        << setw(width) << "-"
+        << setw(width) << "-"
+        << setw(width) << "-"
+        << setw(width) << "-"
+        << setw(width) << "-"
+        << setfill(' ')
+        << endl;
     for (int i = 0; i < DanhSach.n; ++i)
     {
         if (DanhSach.nodes[i].MaLop == maLopCanTim)
         {
-            cout << "Sinh vien thu " << i + 1 << ":\n";
-            cout << "MSSV: " << DanhSach.nodes[i].MaSV << endl;
-            cout << "Ho: " << DanhSach.nodes[i].Ho << endl;
-            cout << "Ten: " << DanhSach.nodes[i].Ten << endl;
-            cout << "Gioi tinh: " << DanhSach.nodes[i].Phai << endl;
-            cout << "So DT: " << DanhSach.nodes[i].SoDT << endl;
-            cout << "Ma Lop: " << DanhSach.nodes[i].MaLop << endl;
-            cout << "--------------------------\n";
+                cout << setw(width) << left << DanhSach.nodes[i].MaSV
+                    << setw(width) << left << DanhSach.nodes[i].Ho
+                    << setw(width) << left << DanhSach.nodes[i].Ten
+                    << setw(width) << left << DanhSach.nodes[i].Phai
+                    << setw(width) << left << DanhSach.nodes[i].SoDT
+                    << setw(width) << left << DanhSach.nodes[i].MaLop
+                    << endl;
         }
     }
 }
@@ -133,26 +150,25 @@ void inDanhSachSinhVien(const DSSV &DanhSach)
 {
     string maLopCanTim;
     cout << "Nhap ma lop can in danh sach sinh vien: ";
-    getline(cin, maLopCanTim);
+    getOnlyWord_Number(maLopCanTim, 15);
 
     bool found = false; // Biến kiểm tra có sinh viên nào thuộc mã lớp nhập vào hay không
-
+    const int width = 20; // Đặt chiều rộng cột
+    cout << setw(width) << left << "MSSV" << setw(width) << left << "Ho" << setw(width) << left << "Ten" << setw(width)
+         << left << "Gioi tinh" << setw(width) << left << "So DT" << setw(width) << left << "Ma Lop" << endl;
+    // In đường viền dưới tiêu đề
+    cout << setfill('-') << setw(width) << "-" << setw(width) << "-" << setw(width) << "-" << setw(width) << "-"
+         << setw(width) << "-" << setw(width) << "-" << setfill(' ') << endl;
     for (int i = 0; i < DanhSach.n; ++i)
     {
         if (DanhSach.nodes[i].MaLop == maLopCanTim)
         {
-            found = true;
-            cout << "Sinh vien thu " << i + 1 << ":\n";
-            cout << "MSSV: " << DanhSach.nodes[i].MaSV << endl;
-            cout << "Ho: " << DanhSach.nodes[i].Ho << endl;
-            cout << "Ten: " << DanhSach.nodes[i].Ten << endl;
-            cout << "Gioi tinh: " << DanhSach.nodes[i].Phai << endl;
-            cout << "So DT: " << DanhSach.nodes[i].SoDT << endl;
-            cout << "Ma Lop: " << DanhSach.nodes[i].MaLop << endl;
-            cout << "--------------------------\n";
+            cout << setw(width) << left << DanhSach.nodes[i].MaSV << setw(width) << left << DanhSach.nodes[i].Ho
+                 << setw(width) << left << DanhSach.nodes[i].Ten << setw(width) << left << DanhSach.nodes[i].Phai
+                 << setw(width) << left << DanhSach.nodes[i].SoDT << setw(width) << left << DanhSach.nodes[i].MaLop
+                 << endl;
         }
     }
-
     if (!found)
     {
         cout << "Khong tim thay ma lop" << maLopCanTim;

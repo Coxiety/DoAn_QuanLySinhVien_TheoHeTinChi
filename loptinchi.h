@@ -18,6 +18,14 @@
         file << dsltc.nodes[i]->TrangThaiLTC << endl;
         file << dsltc.nodes[i]->MaLopTC << endl;
 
+        // Ghi danh sách sinh viên đăng ký
+        PTRDK p = dsltc.nodes[i]->FirstDK;
+        while (p != nullptr)
+        {
+            file << p->dk.MaSV << " " << p->dk.TrangThai << " " << p->dk.Diem << endl;
+            p = p->next;
+        }
+
         if (i < dsltc.n - 1)
         {
             file << endl; // Thêm dòng trống giữa các lớp tín chỉ, ngoại trừ lớp cuối cùng
@@ -63,45 +71,49 @@ void HienThiDanhSachLopTinChi(const DSLTC &dsltc, PTRMH root)
         cout << "-----------------------------" << endl;
     }
 }
+void printRow(int maLopTC, const string &maMH, const string &tenMH, const string &nienKhoa, int hocKy, int nhom,
+              int svMin, int svMax, const string &trangThai)
+{
+    const int mini = 8;
+    const int width = 15;
+    const int longWidth = 35;
+
+    cout << setw(width) << left << maLopTC << setw(width) << left << maMH << setw(longWidth) << left << tenMH
+         << setw(width) << left << nienKhoa << setw(mini) << left << hocKy << setw(mini) << left << nhom << setw(mini)
+         << right << svMin << setw(mini) << right << svMax << setw(mini) << right << trangThai << endl;
+}
 void InDanhSachLopTinChi(const DSLTC &dsltc, PTRMH root, const string &nienKhoa, int hocKy)
 {
-
     bool found = false;
+    const int mini = 8;
+    const int width = 15;
+    const int longWidth = 35;
+
+    cout << setw(width) << left << "Ma Lop TC" << setw(width) << left << "Ma MH" << setw(longWidth) << left << "Ten MH"
+         << setw(width) << left << "Nien Khoa" << setw(mini) << left << "Hoc Ky" << setw(mini) << left << "Nhom"
+         << setw(mini) << right << "SV Min" << setw(mini) << right << "SV Max" << setw(mini) << right << "TT" << endl;
+
+    cout << setfill('-') << setw(width) << "-" << setw(width) << "-" << setw(longWidth) << "-" << setw(width) << "-"
+         << setw(mini) << "-" << setw(mini) << "-" << setw(mini) << "-" << setw(mini) << "-" << setw(mini) << "-"
+         << setfill(' ') << endl;
 
     for (int i = 0; i < dsltc.n; ++i)
     {
         if (dsltc.nodes[i]->NienKhoa == nienKhoa && dsltc.nodes[i]->HocKy == hocKy)
         {
             found = true;
-            cout << "Danh sach lop tin chi cho nien khoa " << nienKhoa << " va hoc ky " << hocKy << ":" << endl;
             PTRMH mhNode = timKiemMonHoc(root, dsltc.nodes[i]->MaMH);
-            string tenMH;
-            if (mhNode != nullptr)
-            {
-                tenMH = mhNode->mh.TenMH;
-            }
-            else
-            {
-                tenMH = "Khong tim thay";
-            }
+            string tenMH = (mhNode != nullptr) ? mhNode->mh.TenMH : "Khong tim thay";
 
-            // Hiển thị thông tin chi tiết của từng lớp tín chỉ
-            cout << "Ma Lop TC: " << dsltc.nodes[i]->MaLopTC << endl;
-            cout << "Ma MH: " << dsltc.nodes[i]->MaMH << endl;
-            cout << "Ten MH: " << tenMH << endl;
-            cout << "Nien khoa: " << dsltc.nodes[i]->NienKhoa << endl;
-            cout << "Hoc ky: " << dsltc.nodes[i]->HocKy << endl;
-            cout << "Nhom: " << dsltc.nodes[i]->Nhom << endl;
-            cout << "So SV toi thieu: " << dsltc.nodes[i]->SoSVMin << endl;
-            cout << "So SV toi da: " << dsltc.nodes[i]->SoSVMax << endl;
-            cout << "Trang thai: " << (dsltc.nodes[i]->TrangThaiLTC == 1 ? "Mo" : "Huy") << endl;
-            cout << "-----------------------------" << endl;
+            printRow(dsltc.nodes[i]->MaLopTC, dsltc.nodes[i]->MaMH, tenMH, dsltc.nodes[i]->NienKhoa,
+                     dsltc.nodes[i]->HocKy, dsltc.nodes[i]->Nhom, dsltc.nodes[i]->SoSVMin, dsltc.nodes[i]->SoSVMax,
+                     (dsltc.nodes[i]->TrangThaiLTC == 1 ? "Mo" : "Huy"));
         }
     }
+
     if (!found)
     {
         cout << "Khong tim thay lop tin chi nao cho nien khoa " << nienKhoa << " va hoc ky " << hocKy << "." << endl;
-        return;
     }
 }
 void ThemLopTinChi(DSLTC &dsltc, int &currentMaLopTC, PTRMH root)
@@ -121,12 +133,11 @@ void ThemLopTinChi(DSLTC &dsltc, int &currentMaLopTC, PTRMH root)
     cin.ignore();
     getline(cin, newLTC->MaMH);
 
-    // Kiểm tra mã môn học có tồn tại trong cây BST hay không
     if (timKiemMonHoc(root, newLTC->MaMH) == nullptr)
     {
         cout << "Ma mon hoc khong ton tai. Vui long nhap lai." << endl;
         delete newLTC;
-        currentMaLopTC--; // Giảm mã lớp tín chỉ vì không thêm được lớp mới
+        currentMaLopTC--;
         return;
     }
 
@@ -140,8 +151,6 @@ void ThemLopTinChi(DSLTC &dsltc, int &currentMaLopTC, PTRMH root)
     cout << "Nhap nhom: ";
     cin >> newLTC->Nhom;
     cin.ignore();
-
-    // Kiểm tra trùng niên khóa, học kỳ, nhóm trong danh sách lớp tín chỉ
     for (int i = 0; i < dsltc.n; ++i)
     {
         if (dsltc.nodes[i]->NienKhoa == newLTC->NienKhoa && dsltc.nodes[i]->HocKy == newLTC->HocKy &&
@@ -149,7 +158,7 @@ void ThemLopTinChi(DSLTC &dsltc, int &currentMaLopTC, PTRMH root)
         {
             cout << "Lop tin chi da ton tai cho mon hoc, nien khoa, hoc ky, nhom nay. Vui long nhap lai." << endl;
             delete newLTC;
-            currentMaLopTC--; // Giảm mã lớp tín chỉ vì không thêm được lớp mới
+            currentMaLopTC--;
             return;
         }
     }
@@ -194,8 +203,7 @@ void XoaLopTinChi(DSLTC &dsltc, PTRMH root)
             if (save == 'y' || save == 'Y')
             {
                 delete dsltc.nodes[i];
-                dsltc.nodes[i] =
-                    dsltc.nodes[--dsltc.n]; // Di chuyển lớp tín chỉ cuối cùng vào vị trí của lớp tín chỉ bị xóa
+                dsltc.nodes[i] = dsltc.nodes[--dsltc.n];
                 cout << "Xoa lop tin chi thanh cong!" << endl;
                 LuuVaoFile("DSLTC.txt", dsltc);
             }
@@ -306,6 +314,7 @@ void DocLTC(const string &tenFile, DSLTC &dsltc, int &currentMaLopTC)
     {
         dsltc.nodes[dsltc.n] = new LopTinChi;
 
+        // Đọc thông tin lớp tín chỉ
         getline(inFile, dsltc.nodes[dsltc.n]->MaMH);
         if (dsltc.nodes[dsltc.n]->MaMH.empty())
         {
@@ -321,13 +330,26 @@ void DocLTC(const string &tenFile, DSLTC &dsltc, int &currentMaLopTC)
         inFile >> dsltc.nodes[dsltc.n]->MaLopTC;
         inFile.ignore(); // Bỏ qua ký tự newline sau khi đọc số nguyên
 
-        // Bỏ qua dòng trống
-        string temp;
-        getline(inFile, temp);
-
-        if (dsltc.nodes[dsltc.n]->MaLopTC >= currentMaLopTC)
+        // Đọc danh sách sinh viên đăng ký ngay sau thông tin lớp tín chỉ
+        string line;
+        while (getline(inFile, line))
         {
-            currentMaLopTC = dsltc.nodes[dsltc.n]->MaLopTC + 1;
+            if (line.empty())
+            {
+                break; // Kết thúc danh sách sinh viên của lớp này khi gặp dòng trống
+            }
+            istringstream iss(line);
+            string maSV;
+            int trangThai;
+            float diem;
+            iss >> maSV >> trangThai >> diem;
+
+            PTRDK newDK = new nodeDangKy;
+            newDK->dk.MaSV = maSV;
+            newDK->dk.TrangThai = trangThai;
+            newDK->dk.Diem = diem;
+            newDK->next = dsltc.nodes[dsltc.n]->FirstDK;
+            dsltc.nodes[dsltc.n]->FirstDK = newDK;
         }
 
         dsltc.n++;
@@ -394,14 +416,10 @@ void HienThiLopTinChiTrongHocKy(const DSLTC &dsltc, PTRMH root, const string &ni
             {
                 tenMH = "Khong tim thay";
             }
-
-            // Hiển thị thông tin chi tiết của từng lớp tín chỉ
             cout << "Ma Lop TC: " << dsltc.nodes[i]->MaLopTC << endl;
             cout << "Ma MH: " << dsltc.nodes[i]->MaMH << endl;
             cout << "Ten MH: " << tenMH << endl;
             cout << "Nhom: " << dsltc.nodes[i]->Nhom << endl;
-
-            // Đếm số lượng sinh viên đã đăng ký
             int countSV = 0;
             PTRDK p = dsltc.nodes[i]->FirstDK;
             while (p != nullptr)
@@ -426,7 +444,6 @@ void HienThiLopTinChiTrongHocKy(const DSLTC &dsltc, PTRMH root, const string &ni
     }
 }
 
-// Hàm kiểm tra và in thông tin sinh viên
 bool InThongTinSinhVien(const DSSV &dssv, const string &maSV)
 {
     for (int i = 0; i < dssv.n; ++i)
@@ -446,131 +463,110 @@ bool InThongTinSinhVien(const DSSV &dssv, const string &maSV)
     cout << "Khong tim thay sinh vien voi Ma SV: " << maSV << endl;
     return false;
 }
-
 void DangKyLopTinChi(DSLTC &dsltc, PTRMH root, const DSSV &dssv)
 {
     string maSV;
-    bool found = false;
+    string maLopTC;
+    string nienKhoa;
+    string hocKy;
+    bool foundLopTC = false;
+    cout << "Nhap ma sinh vien can dang ky: ";
+    cin >> maSV;
+    bool foundSV = false;
+    for (int i = 0; i < dssv.n; ++i)
+    {
+        if (dssv.nodes[i].MaSV == maSV)
+        {
+            foundSV = true;
+            InThongTinSinhVien(dssv, maSV);
+            break;
+        }
+    }
+
+    if (!foundSV)
+    {
+        cout << "Khong tim thay sinh vien voi ma: " << maSV << endl;
+        return;
+    }
+    cout << "Nhap nien khoa: ";
+    getNumber_dash(nienKhoa, 9);
+    cout << "Nhap hoc ky: ";
+    batHocKy(hocKy, 1);
+    HienThiLopTinChiTrongHocKy(dsltc, root, nienKhoa, stoi(hocKy));
     do
     {
-        cout << "Nhap ma sinh vien: ";
-        cin >> maSV;
-        found = InThongTinSinhVien(dssv, maSV);
-    } while (!found);
+        cout << "Nhap ma lop tin chi can dang ky: ";
+        cin >> maLopTC;
 
-    string nienKhoa;
-    int hocKy;
-    cout << "Nhap nien khoa: ";
-    cin >> nienKhoa;
-    cout << "Nhap hoc ky: ";
-    cin >> hocKy;
-
-    HienThiLopTinChiTrongHocKy(dsltc, root, nienKhoa, hocKy);
-
-    int maLopTC;
-    cout << "Nhap ma lop tin chi can dang ky: ";
-    cin >> maLopTC;
-
-    // Tìm lớp tín chỉ
-    for (int i = 0; i < dsltc.n; ++i)
-    {
-        if (dsltc.nodes[i]->MaLopTC == maLopTC)
+        for (int i = 0; i < dsltc.n; ++i)
         {
-            LopTinChi *ltc = dsltc.nodes[i];
-
-            // Kiểm tra số lượng sinh viên đã đăng ký
-            int countSV = 0;
-            PTRDK p = ltc->FirstDK;
-            while (p != nullptr)
+            if (dsltc.nodes[i]->MaLopTC == stoi(maLopTC))
             {
-                if (p->dk.TrangThai == 1)
+                LopTinChi *ltc = dsltc.nodes[i];
+                foundLopTC = true;
+                if (ltc->NienKhoa != nienKhoa || ltc->HocKy != stoi(hocKy))
                 {
-                    countSV++;
+                    cout << "Lop tin chi khong phu hop voi nien khoa va hoc ky da chon." << endl;
+                    return;
                 }
-                p = p->next;
-            }
-
-            if (countSV >= ltc->SoSVMax)
-            {
-                cout << "Lop tin chi da day. Khong the dang ky." << endl;
+                int countSV = 0;
+                PTRDK p = ltc->FirstDK;
+                while (p != nullptr)
+                {
+                    if (p->dk.TrangThai == 1)
+                    {
+                        countSV++;
+                    }
+                    p = p->next;
+                }
+                if (countSV >= ltc->SoSVMax)
+                {
+                    cout << "Lop tin chi da day. Khong the dang ky." << endl;
+                    return;
+                }
+                PTRDK newDK = new nodeDangKy;
+                newDK->dk.MaSV = maSV;
+                newDK->dk.TrangThai = 1;
+                newDK->dk.Diem = 0;
+                newDK->next = ltc->FirstDK;
+                ltc->FirstDK = newDK;
+                cout << "Dang ky thanh cong!" << endl;
+                LuuVaoFile("DSLTC.txt", dsltc);
                 return;
             }
+        }
+    } while (!foundLopTC);
+    if (!foundLopTC)
+    {
+        cout << "Khong tim thay lop tin chi voi ma " << maLopTC << endl;
+    }
+}
 
-            // Thêm sinh viên vào danh sách đăng ký
-            PTRDK newDK = new nodeDangKy;
-            newDK->dk.MaSV = maSV;
-            newDK->dk.TrangThai = 1;
-            newDK->dk.Diem = 0; // Chưa có điểm
-            newDK->next = ltc->FirstDK;
-            ltc->FirstDK = newDK;
+void HuyDangKyLopTinChi(DSLTC &dsltc, const string &masv, const string &maMH, const string &nienkhoa, int hocky,
+                        int nhom)
+{
+    for (int i = 0; i < dsltc.n; i++)
+    {
+        LopTinChi *lop = dsltc.nodes[i];
+        if (lop->MaMH == maMH && lop->NienKhoa == nienkhoa && lop->HocKy == hocky && lop->Nhom == nhom)
+        {
+            PTRDK prev = nullptr;
+            PTRDK curr = lop->FirstDK;
 
-            cout << "Dang ky thanh cong!" << endl;
-
-            // Lưu mã sinh viên vào file của lớp tín chỉ
-            ofstream outFile(to_string(ltc->MaLopTC) + ".txt", ios::app);
-            if (!outFile)
+            while (curr != nullptr)
             {
-                cout << "Khong the mo file de ghi." << endl;
-                return;
+                if (curr->dk.MaSV == masv)
+                {
+                    curr->dk.TrangThai = 0; // 0 (hủy đăng ký)
+                    std::cout << "Sinh viên " << masv << " đã hủy đăng ký lớp tín chỉ thành công.\n";
+                    return;
+                }
+                prev = curr;
+                curr = curr->next;
             }
-            outFile << maSV << endl;
-            outFile.close();
-
+            cout << "Không tìm thấy sinh viên " << masv << " trong danh sách đăng ký lớp tín chỉ.\n";
             return;
         }
     }
-    cout << "Khong tim thay lop tin chi voi ma " << maLopTC << endl;
+    cout << "Không tìm thấy lớp tín chỉ với thông tin đã nhập.\n";
 }
-
-// void NhapDiem(DSLTC &dsltc, PTRMH root, const DSSV &dssv)
-// {
-//     string maSV;
-//     string maMH;
-//     string nienKhoa;
-//     string hocKy;
-//     int nhom;
-
-//     cout << "Nhap nien khoa: ";
-//     getNumber_dash(nienKhoa, 9);
-//     cout << "Nhap hoc ky: ";
-//     batHocKy(hocKy, 1);
-//     cout >> "Nhap nhom: ";
-//     cin >> nhom;
-//     cout << "Nhap mon hoc: ";
-//     getOnlyWord_Number(maMH, 13);
-
-//     LopTinChi ltc;
-
-//     for (int i = 0; i < dsltc.n; ++i)
-//     {
-//         if (dsltc.nodes[i]->NienKhoa == nienKhoa && dsltc.nodes[i]->HocKy == hocKy)
-//         {
-//             PTRMH mhNode = timKiemMonHoc(root, maMH);
-//             string tenMH;
-//             if (mhNode != nullptr)
-//             {
-//                 tenMH = mhNode->mh.TenMH;
-//                 ltc = dsltc.node[i];
-//             }
-//             else
-//             {
-//                 tenMH = "Khong tim thay";
-//             }
-//         }
-
-//         int countSV = 0;
-//         PTRDK p = ltc.FirstDK;
-//         while (p != nullptr)
-//         {
-//             if (p->dk.TrangThai == 1)
-//             {
-//                 float diem;
-//                 cin >> diem;
-//                 p->dk.Diem = diem;
-//             }
-//             p = p->next;
-//         }
-//     }
-
-//     return;
-// }

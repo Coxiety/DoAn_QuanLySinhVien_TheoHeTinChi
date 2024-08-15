@@ -1,47 +1,46 @@
 #pragma once
 DSSV DanhSach_SinhVien;
 
-void drawMenu_MainMenu(int menuSize)
+void gotoxy(int x, int y)
 {
-    int cols, rows;
-    getConsoleSize(cols, rows);
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
 
-    int menuWidth = 30;
-    int menuHeight = menuSize * 2;
+void draw_border(int x, int y, int width, int height)
+{
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
 
-    // Calculate top left corner to center the menu
-    int startX = (cols - menuWidth) / 2;
-    int startY = (rows - menuHeight) / 2;
-
-    // Draw the menu
-    for (int i = 0; i < menuSize; ++i)
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+    gotoxy(x, y);
+    cout << char(201);
+    for (int i = 0; i < width - 2; ++i)
     {
-        // Draw the outline
-        for (int j = 0; j < menuWidth; ++j)
-        {
-            gotoxy(startX + j, startY + i * 2);
-            cout << "-";
-        }
-        for (int j = 0; j < menuWidth; ++j)
-        {
-            gotoxy(startX + j, startY + i * 2 + 1);
-            cout << " ";
-        }
-        gotoxy(startX, startY + i * 2 + 1);
-        cout << "|";
-        gotoxy(startX + menuWidth - 1, startY + i * 2 + 1);
-        cout << "|";
+        cout << char(205);
     }
-    for (int j = 0; j < menuWidth; ++j)
-    {
-        gotoxy(startX + j, startY + menuSize * 2);
-        cout << "_";
-    }
-    // // Reset text attribute
-    // SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+    cout << char(187);
 
-    // // Reset cursor position
-    // gotoxy(0, startY + menuHeight + 1);
+    for (int i = 1; i < height - 1; ++i)
+    {
+        gotoxy(x, y + i);
+        cout << char(186);
+        gotoxy(x + width - 1, y + i);
+        cout << char(186);
+    }
+
+    gotoxy(x, y + height - 1);
+    cout << char(200);
+    for (int i = 0; i < width - 2; ++i)
+    {
+        cout << char(205);
+    }
+    cout << char(188);
+
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 }
 
 void moveByArrow(int &highlight, int &option, int &haveEntered, int menu_size)
@@ -62,39 +61,28 @@ void moveByArrow(int &highlight, int &option, int &haveEntered, int menu_size)
     }
 }
 
-// void gotoxy(int x, int y)
-// {
-//     COORD coord;
-//     coord.X = x;
-//     coord.Y = y;
-//     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-// }
-
 void get_highlight(int highlight, const string which_Menu[], int menu_size)
 {
-    int cols, rows;
-    getConsoleSize(cols, rows);
+    int x = 45;
+    int y = 7;
+    int width = 40;
+    int height = 3;
 
-    int menuWidth = 30;
-    int menuHeight = menu_size * 2;
-
-    // Calculate top left corner to center the menu
-    int startX = (cols - menuWidth) / 2;
-    int startY = (rows - menuHeight) / 2;
     for (int i = 0; i < menu_size; ++i)
     {
+        draw_border(x, y + i * (height - 1), width, height);
+        gotoxy(x + 1, y + 1 + i * (height - 1));
+
         if (i == highlight)
         {
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240); // Màu sáng
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240);
         }
         else
         {
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); // Màu thường
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
         }
-        gotoxy(startX + 1, startY + i * 2 + 1);
-        cout << which_Menu[i] << endl;
+        cout << which_Menu[i];
     }
-    // Đặt lại màu thường sau khi in menu
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 }
 
@@ -112,22 +100,18 @@ void SINHVIEN_menu(int &highlight, int option)
     while (true)
     {
         int haveEntered = 0;
-        // system("cls");
         get_highlight(highlight, option_menu_MONHOC, size(option_menu_MONHOC));
         moveByArrow(highlight, option, haveEntered, size(option_menu_MONHOC));
         if (haveEntered == 0)
         {
             continue;
         }
-        // else
-        // {
-        //     system("cls");
-        // }
         switch (option)
         {
         case 0: // Them sinh vien
             system("cls");
             cout << "Them sinh vien" << endl;
+            (DanhSach_SinhVien);
             nhapSinhVien(DanhSach_SinhVien);
             system("cls");
             // system("pause");

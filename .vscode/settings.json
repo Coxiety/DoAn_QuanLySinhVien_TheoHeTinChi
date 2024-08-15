@@ -8,7 +8,9 @@
     "utility": "cpp",
     "string": "cpp",
     "functional": "cpp",
-    "xlocale": "cpp"
+    "xlocale": "cpp",
+    "iomanip": "cpp",
+    "ios": "cpp"
   },
   "workbench.colorTheme": "Default Dark Modern",
   "prettier.useEditorConfig": true,

@@ -14,7 +14,6 @@ int main()
     docMonHocTuFile("list_MonHoc.txt", root);
     docList_SinhVien("list_SinhVien.txt", DanhSach_SinhVien);
     sortDanhSachSinhVien(DanhSach_SinhVien);
-    // veHinhChuNhat(30, 10, 2, "MENU"); // Ham Main menu
     main_menu(highlight, option, root, dsltc, rootTheoTen);
     return 0;
 }
