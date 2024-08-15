@@ -3,6 +3,168 @@ void docMonHocTuFile(const string &tenFile, PTRMH &root);
 PTRMH xoaMonHoc(PTRMH root, const string &maMH);
 PTRMH xoaNode(PTRMH root, const string &maMH);
 // In-order traversal để in cây
+void boxNhapDiem(int x, int y, int w, int h)
+{
+    if (h <= 1 || w <= 1)
+        return;
+    for (int ix = x; ix <= x + w; ix++)
+    {
+        gotoxy(ix, y);
+        cout << char(196);
+        gotoxy(ix, y + 2);
+        cout << char(196);
+        gotoxy(ix, y + 4);
+        cout << char(196);
+        gotoxy(ix, y + 6);
+        cout << char(196);
+        gotoxy(ix, y + 8);
+        cout << char(196);
+        gotoxy(ix, y + 10);
+        cout << char(196);
+        gotoxy(ix, y + 12);
+        cout << char(196);
+        gotoxy(ix, y + 14);
+        cout << char(196);
+        gotoxy(ix, y + 16);
+        cout << char(196);
+        gotoxy(ix, y + 18);
+        cout << char(196);
+        gotoxy(ix, y + 20);
+        cout << char(196);
+        gotoxy(ix, y + 22);
+        cout << char(196);
+        gotoxy(ix, y + h);
+        cout << char(196);
+    }
+    for (int iy = y; iy <= y + h; iy++)
+    {
+        gotoxy(x, iy);
+        cout << char(179);
+        gotoxy(x + 7, iy);
+        cout << char(179);
+        gotoxy(x + 25, iy);
+        cout << char(179);
+        gotoxy(x + 77, iy);
+        cout << char(179);
+        gotoxy(x + 89, iy);
+        cout << char(179);
+        gotoxy(x + w, iy);
+        cout << char(179);
+    }
+    gotoxy(x, y);
+    cout << char(218);
+    gotoxy(x, y + h);
+    cout << char(192);
+    gotoxy(x + w, y);
+    cout << char(191);
+    gotoxy(x + w, y + h);
+    cout << char(217);
+    gotoxy(x + 7, y);
+    cout << char(194);
+    gotoxy(x + 25, y);
+    cout << char(194);
+    gotoxy(x + 77, y);
+    cout << char(194);
+    gotoxy(x + 89, y);
+    cout << char(194);
+    gotoxy(x + 7, y + h);
+    cout << char(193);
+    gotoxy(x + 25, y + h);
+    cout << char(193);
+    gotoxy(x + 77, y + h);
+    cout << char(193);
+    gotoxy(x + 89, y + h);
+    cout << char(193);
+    gotoxy(x + 2, y + 1);
+    cout << "STT";
+    gotoxy(x + 14, y + 1);
+    cout << "MASV";
+    gotoxy(x + 50, y + 1);
+    cout << "HO";
+    gotoxy(x + 81, y + 1);
+    cout << "TEN";
+    gotoxy(x + 91, y + 1);
+    cout << "DIEM";
+}
+void boxXoa(int x, int y, int w, int h)
+{
+    if (h <= 1 || w <= 1)
+        return;
+    for (int ix = x; ix <= x + w; ix++)
+    {
+        gotoxy(ix, y);
+        cout << char(196);
+        gotoxy(ix, y + 2);
+        cout << char(196);
+        gotoxy(ix, y + 4);
+        cout << char(196);
+        gotoxy(ix, y + 6);
+        cout << char(196);
+        gotoxy(ix, y + 8);
+        cout << char(196);
+        gotoxy(ix, y + 10);
+        cout << char(196);
+        gotoxy(ix, y + 12);
+        cout << char(196);
+        gotoxy(ix, y + 14);
+        cout << char(196);
+        gotoxy(ix, y + 16);
+        cout << char(196);
+        gotoxy(ix, y + 18);
+        cout << char(196);
+        gotoxy(ix, y + 20);
+        cout << char(196);
+        gotoxy(ix, y + 22);
+        cout << char(196);
+        gotoxy(ix, y + h);
+        cout << char(196);
+    }
+    for (int iy = y; iy <= y + h; iy++)
+    {
+        gotoxy(x, iy);
+        cout << char(179);
+        gotoxy(x + 12, iy);
+        cout << char(179);
+        gotoxy(x + 64, iy);
+        cout << char(179);
+        gotoxy(x + 71, iy);
+        cout << char(179);
+        gotoxy(x + w, iy);
+        cout << char(179);
+    }
+    gotoxy(x, y);
+    cout << char(218);
+    gotoxy(x, y + h);
+    cout << char(192);
+    gotoxy(x + w, y);
+    cout << char(191);
+    gotoxy(x + w, y + h);
+    cout << char(217);
+
+    gotoxy(x + 12, y);
+    cout << char(194);
+    gotoxy(x + 64, y);
+    cout << char(194);
+    gotoxy(x + 71, y);
+    cout << char(194);
+
+    gotoxy(x + 12, y + h);
+    cout << char(193);
+    gotoxy(x + 64, y + h);
+    cout << char(193);
+    gotoxy(x + 71, y + h);
+    cout << char(193);
+
+    gotoxy(x + 4, y + 1);
+    cout << "MAMH";
+    gotoxy(x + 36, y + 1);
+    cout << "TENMH";
+    gotoxy(x + 65, y + 1);
+    cout << "STCLT";
+    gotoxy(x + 72, y + 1);
+    cout << "STCTH";
+}
+// In-order traversal để in cây
 void inCay(PTRMH root)
 {
     if (root)
@@ -27,7 +189,6 @@ void inDanhSachMonHoc(PTRMH root)
         inCay(root);
     }
 }
-
 void themMonHocTheoTen(PTRMHTheoTen &root, MonHoc mh)
 {
     if (root == nullptr)
@@ -46,7 +207,7 @@ void themMonHocTheoTen(PTRMHTheoTen &root, MonHoc mh)
 }
 void saoChepCay(PTRMH root, PTRMHTheoTen &rootTheoTen)
 {
-    if (root == nullptr)
+    if (!root)
         return;
 
     saoChepCay(root->left, rootTheoTen);
@@ -55,16 +216,71 @@ void saoChepCay(PTRMH root, PTRMHTheoTen &rootTheoTen)
 }
 void inDanhSachMonHocTheoTen(PTRMHTheoTen root)
 {
-    if (root == nullptr)
+    if (!root)
+    {
         return;
+    }
+    else
+    {
+        inDanhSachMonHocTheoTen(root->left);
+        cout << "Ma Mon Hoc: " << root->mh.MaMH << endl;
+        cout << "Ten Mon Hoc: " << root->mh.TenMH << endl;
+        cout << "STCLT: " << root->mh.STCLT << endl;
+        cout << "STCTH: " << root->mh.STCTH << endl;
+        cout << "-----------------------" << endl;
+        inDanhSachMonHocTheoTen(root->right);
+    }
+}
+void inMonHoc(PTRMHTheoTen node, int &row, int x, int y, int khungHeight, int khungWidth)
+{
+    if (!node)
+    {
+        return;
+    }
 
-    inDanhSachMonHocTheoTen(root->left);
-    cout << "Ma Mon Hoc: " << root->mh.MaMH << endl;
-    cout << "Ten Mon Hoc: " << root->mh.TenMH << endl;
-    cout << "STCLT: " << root->mh.STCLT << endl;
-    cout << "STCTH: " << root->mh.STCTH << endl;
-    cout << "-----------------------" << endl;
-    inDanhSachMonHocTheoTen(root->right);
+    inMonHoc(node->left, row, x, y, khungHeight, khungWidth);
+
+    gotoxy(x + 2, y + row);
+    cout << node->mh.MaMH;
+    gotoxy(x + 14, y + row);
+    cout << node->mh.TenMH;
+    gotoxy(x + 65, y + row);
+    cout << node->mh.STCLT;
+    gotoxy(x + 72, y + row);
+    cout << node->mh.STCTH;
+    row += 2;
+
+    if (row >= khungHeight - 1)
+    {
+        gotoxy(x, y + khungHeight - 1);
+        cout << "Nhan phim bat ky de xem tiep...";
+        _getch();
+        boxXoa(x, y, khungWidth, khungHeight);
+        row = 3;
+    }
+
+    inMonHoc(node->right, row, x, y, khungHeight, khungWidth);
+}
+
+void inDanhSachMonHocTheoTenVaoKhung(PTRMHTheoTen root, int x, int y)
+{
+    int khungWidth = 78;
+    int khungHeight = 24;
+    boxXoa(x, y, khungWidth, khungHeight);
+
+    gotoxy(x + 4, y + 1);
+    cout << "MAMH";
+    gotoxy(x + 36, y + 1);
+    cout << "TENMH";
+    gotoxy(x + 65, y + 1);
+    cout << "STCLT";
+    gotoxy(x + 72, y + 1);
+    cout << "STCTH";
+
+    int row = 3;
+
+    // Gọi hàm in đệ quy
+    inMonHoc(root, row, x, y, khungHeight, khungWidth);
 }
 // Hàm kiểm tra mã môn học đã tồn tại trong cây chưa
 bool checkTrungMaMH(PTRMH root, const string &maMH)
@@ -317,7 +533,8 @@ void ghiMonHocTheoThuTu(PTRMHTheoTen node, ofstream &file)
         ghiMonHocTheoThuTu(node->left, file); // Duyệt trái
         file << node->mh.MaMH << endl;
         file << node->mh.TenMH << endl;
-        file << node->mh.STCLT << " " << node->mh.STCTH << endl;
+        file << node->mh.STCLT << endl;
+        file << node->mh.STCTH << endl;
         ghiMonHocTheoThuTu(node->right, file); // Duyệt phải
     }
 }
@@ -385,22 +602,6 @@ PTRMH xoaNode(PTRMH root, const string &maMH)
     }
     return root;
 }
-
-DSLTC dsltc;
-int currentMaLopTC = 1;
-bool isMaMHInDSLTC(const string &maMH)
-{
-    for (int i = 0; i < dsltc.n; i++)
-    {
-        cout << "Checking MaMH in DSLTC: " << dsltc.nodes[i]->MaMH << endl; // Debug statement
-        if (dsltc.nodes[i]->MaMH == maMH)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
 // Hàm xóa môn học với xác nhận từ người dùng
 PTRMH xoaMonHoc(PTRMH root, const string &maMH)
 {
@@ -410,55 +611,45 @@ PTRMH xoaMonHoc(PTRMH root, const string &maMH)
         return nullptr;
     }
 
-    // Check if MaMH is in any open LopTinChi
-    cout << "Checking if MaMH exists in DSLTC..." << endl; // Debug statement
-    if (isMaMHInDSLTC(maMH))
-    {
-        cout << "Da co lop tinh chi dang mo trung voi ma mon hoc nay.\n";
-        return root; // Exit without deleting
-    }
-
-    // Find the node to delete
+    // Tìm nút cần xóa
     if (maMH < root->mh.MaMH)
     {
-        cout << "Going left, current node MaMH: " << root->mh.MaMH << endl; // Debug statement
         root->left = xoaMonHoc(root->left, maMH);
     }
     else if (maMH > root->mh.MaMH)
     {
-        cout << "Going right, current node MaMH: " << root->mh.MaMH << endl; // Debug statement
         root->right = xoaMonHoc(root->right, maMH);
     }
     else
     {
-        // Confirm with the user before deleting
+        // Xác nhận từ người dùng trước khi xóa
         char confirm;
         cout << "Ban co chac chan muon xoa mon hoc voi ma " << maMH << " khong? (y/n): ";
         cin >> confirm;
-        cin.ignore(); // Ignore newline character
+        cin.ignore(); // Bỏ qua ký tự newline
 
         if (confirm == 'y' || confirm == 'Y')
         {
-            // Delete the node
+            // Xóa nút
             if (root->left == nullptr)
             {
                 PTRMH temp = root->right;
                 delete root;
-                cout << "Xoa mon hoc thanh cong.\n"; // Success message
+                cout << "Xoa mon hoc thanh cong.\n"; // Thông báo thành công
                 return temp;
             }
             else if (root->right == nullptr)
             {
                 PTRMH temp = root->left;
                 delete root;
-                cout << "Xoa mon hoc thanh cong.\n"; // Success message
+                cout << "Xoa mon hoc thanh cong.\n"; // Thông báo thành công
                 return temp;
             }
 
             PTRMH temp = timNhoNhat(root->right);
             root->mh = temp->mh;
             root->right = xoaMonHoc(root->right, root->mh.MaMH);
-            cout << "Xoa mon hoc thanh cong.\n"; // Success message
+            cout << "Xoa mon hoc thanh cong.\n"; // Thông báo thành công
         }
         else
         {

@@ -1,6 +1,6 @@
 #pragma once
 DSSV DanhSach_SinhVien;
-
+int currentMaLopTC = 1;
 void gotoxy(int x, int y)
 {
     COORD coord;
@@ -180,9 +180,10 @@ void MonHoc_Menu(int &highlight, int option, PTRMH &root, PTRMHTheoTen rootTheoT
             break;
         case 1: // In danh sách môn học
             system("cls");
-            // saoChepCay(root, rootTheoTen);
+            saoChepCay(root, rootTheoTen);
             cout << "In danh sach mon hoc" << endl;
-            inDanhSachMonHocTheoTen(rootTheoTen);
+            inDanhSachMonHocTheoTenVaoKhung(rootTheoTen, 10, 3);
+            _getch();
             system("pause");
             system("cls");
             break;

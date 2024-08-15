@@ -1,5 +1,5 @@
 #pragma once
-
+#include "mylib.h"
 void boxNhapDiem(int x, int y, int w, int h) {
 	if (h <= 1 || w <= 1) return;
 	for (int ix = x; ix <= x + w; ix++)
