@@ -1,3 +1,35 @@
+void printUniqueMaLop(const string& fileName) 
+{
+    ifstream infile(fileName);
+    
+    if (!infile.is_open()) 
+    {
+        cout << "Không thể mở file " << fileName << endl;
+        return;
+    }
+
+    string line;
+    string lastMaLop = "";
+
+    while (getline(infile, line)) 
+    {
+        string maLop = line.substr(0, line.find(' '));
+        
+        if (maLop != lastMaLop) 
+        {
+            cout << maLop << endl;
+            lastMaLop = maLop;
+        }
+        // Bỏ qua các dòng khác của sinh viên
+        for (int i = 0; i < 4; i++)
+        {
+            getline(infile, line);
+        }
+    }
+
+    infile.close();
+}
+
 bool compareSinhVien(const SinhVien &a, const SinhVien &b) /*Ham Dung De so sanh Ten va Ho, so sanh thong tin cua
 sinh vien A va B*/
 {
@@ -148,14 +180,23 @@ void inDanhSachSinhVienChoCacHam(const DSSV &DanhSach, string maLopCanTim)
 
 void inDanhSachSinhVien(const DSSV &DanhSach)
 {
+    cout << "Danh sach lop dang ton tai: \n";
+    printUniqueMaLop("list_SinhVien.txt");
     string maLopCanTim;
     cout << "Nhap ma lop can in danh sach sinh vien: ";
     getOnlyWord_Number(maLopCanTim, 15);
-
+    cout << endl;
     bool found = false; // Biến kiểm tra có sinh viên nào thuộc mã lớp nhập vào hay không
     const int width = 20; // Đặt chiều rộng cột
-    cout << setw(width) << left << "MSSV" << setw(width) << left << "Ho" << setw(width) << left << "Ten" << setw(width)
-         << left << "Gioi tinh" << setw(width) << left << "So DT" << setw(width) << left << "Ma Lop" << endl;
+   cout << setfill('-')
+        << setw(width) << "-"
+        << setw(width) << "-"
+        << setw(width) << "-"
+        << setw(width) << "-"
+        << setw(width) << "-"
+        << setw(width) << "-"
+        << setfill(' ')
+        << endl;
     // In đường viền dưới tiêu đề
     cout << setfill('-') << setw(width) << "-" << setw(width) << "-" << setw(width) << "-" << setw(width) << "-"
          << setw(width) << "-" << setw(width) << "-" << setfill(' ') << endl;
@@ -163,13 +204,17 @@ void inDanhSachSinhVien(const DSSV &DanhSach)
     {
         if (DanhSach.nodes[i].MaLop == maLopCanTim)
         {
-            cout << setw(width) << left << DanhSach.nodes[i].MaSV << setw(width) << left << DanhSach.nodes[i].Ho
-                 << setw(width) << left << DanhSach.nodes[i].Ten << setw(width) << left << DanhSach.nodes[i].Phai
-                 << setw(width) << left << DanhSach.nodes[i].SoDT << setw(width) << left << DanhSach.nodes[i].MaLop
-                 << endl;
+            found = true;
+            cout << setw(width) << left << DanhSach.nodes[i].MaSV
+                << setw(width) << left << DanhSach.nodes[i].Ho
+                << setw(width) << left << DanhSach.nodes[i].Ten
+                << setw(width) << left << DanhSach.nodes[i].Phai
+                << setw(width) << left << DanhSach.nodes[i].SoDT
+                << setw(width) << left << DanhSach.nodes[i].MaLop
+                << endl;
         }
     }
-    if (!found)
+    if (found == false)
     {
         cout << "Khong tim thay ma lop" << maLopCanTim;
     }
@@ -177,6 +222,8 @@ void inDanhSachSinhVien(const DSSV &DanhSach)
 
 void nhapSinhVien(DSSV &DanhSach)
 {
+    cout << "Danh sach lop dang ton tai: \n";
+    printUniqueMaLop("list_SinhVien.txt");
     SinhVien sv;
     char ch;
     // string maLopChung;
@@ -226,6 +273,9 @@ void nhapSinhVien(DSSV &DanhSach)
 
 void xoa_SinhVien(DSSV &DanhSach)
 {
+    cout << "Danh sach lop dang ton tai: \n";
+    printUniqueMaLop("list_SinhVien.txt");
+    bool found = false;
     SinhVien sv;
     cout << "Nhap ma lop cua sinh can duoc xoa: ";
     getOnlyWord_Number_forMaSV(sv.MaLop, 15);
@@ -238,22 +288,26 @@ void xoa_SinhVien(DSSV &DanhSach)
     {
         if (DanhSach.nodes[i].MaSV == MSSV)
         {
+            found = true;
             for (int j = i; j < DanhSach.n - 1; ++j)
             {
                 DanhSach.nodes[j] = DanhSach.nodes[j + 1];
             }
             --DanhSach.n;
             cout << "Da xoa sinh vien co MSSV: " << MSSV << endl;
-            return;
+            ghiThongTinVaoFile("list_SinhVien.txt", DanhSach);
         }
-        ghiThongTinVaoFile("list_SinhVien.txt", DanhSach);
-        break;
     }
-    cout << "Khong tim thay sinh vien co MSSV: " << MSSV << endl;
+    if(found == false)
+    {
+        cout << "Khong tim thay sinh vien co MSSV: " << MSSV << endl;
+    }
 }
 
 void suaThongTin_SinhVien(DSSV &DanhSach)
 {
+    cout << "Danh sach lop dang ton tai: \n";
+    printUniqueMaLop("list_SinhVien.txt");
     SinhVien sv;
     cout << "Nhap ma lop cua sinh can duoc xoa: ";
     getOnlyWord_Number_forMaSV(sv.MaLop, 15);
@@ -278,7 +332,7 @@ void suaThongTin_SinhVien(DSSV &DanhSach)
 
         if (!found)
         {
-            cout << "Khong co thong tin MSSV trong danh sach. Vui long nhap lai.\n";
+            cout << "Khong tim thay MSSV trong danh sach. Vui long nhap lai.\n";
             continue;
         }
 
