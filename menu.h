@@ -1,6 +1,5 @@
 #pragma once
 DSSV DanhSach_SinhVien;
-int currentMaLopTC = 1;
 void gotoxy(int x, int y)
 {
     COORD coord;
@@ -86,35 +85,64 @@ void get_highlight(int highlight, const string which_Menu[], int menu_size)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 }
 
-void SINHVIEN_menu(int &highlight, int option)
-{
+void themSuaXoaSinhVien() {
+    char choice;
+
+    cout << "Nhap lua chon: F1. Them, F2. Sua, F3. Xoa: ";
+
+    while (true) {
+        choice = _getch();
+        if (choice == 0) {
+            choice = _getch();
+        }
+
+        switch (choice) {
+        case 59: // F1
+            system("cls");
+            cout << "Them sinh vien /n" << endl;
+            nhapSinhVien(DanhSach_SinhVien);
+            system("pause");
+            break;
+        case 60: // F2
+            system("cls");
+            cout << "Sua thong tin sinh vien" << endl;
+            suaThongTin_SinhVien(DanhSach_SinhVien);
+            system("pause");
+            break;
+        case 61: // F3
+            system("cls");
+            xoa_SinhVien(DanhSach_SinhVien);
+            cout << "Xoa sinh vien" << endl;
+            system("pause");
+            break;
+        default:
+            return;
+        }
+    }
+}
+
+void SINHVIEN_menu(int& highlight, int option) {
     system("cls");
-    string option_menu_MONHOC[]
-    {
-        "1. Them sinh vien", 
-        "2. In danh sach sinh vien", 
-        "3. Sua thong tin sinh vien",
-        "4. Xoa sinh vien", 
-        "5. Thoat chuc nang"
+    string option_menu_MONHOC[] = {
+        "1. Them/Sua/Xoa sinh vien",
+        "2. In danh sach sinh vien",
+        "3. Thoat chuc nang"
     };
-    while (true)
-    {
+
+    while (true) {
         int haveEntered = 0;
         get_highlight(highlight, option_menu_MONHOC, size(option_menu_MONHOC));
         moveByArrow(highlight, option, haveEntered, size(option_menu_MONHOC));
-        if (haveEntered == 0)
-        {
+        if (haveEntered == 0) {
             continue;
         }
-        switch (option)
-        {
-        case 0: // Them sinh vien
+
+        switch (option) {
+        case 0: // Them/Sua/Xoa sinh vien
             system("cls");
-            cout << "Them sinh vien" << endl;
-            (DanhSach_SinhVien);
-            nhapSinhVien(DanhSach_SinhVien);
+            cout << "Them/Sua/Xoa sinh vien" << endl;
+            themSuaXoaSinhVien();
             system("cls");
-            // system("pause");
             break;
         case 1:
             system("cls");
@@ -123,23 +151,8 @@ void SINHVIEN_menu(int &highlight, int option)
             system("pause");
             system("cls");
             break;
-        case 2: // Sua thong tin sinh vien
-            system("cls");
-            cout << "Sua thong tin sinh vien" << endl;
-            suaThongTin_SinhVien(DanhSach_SinhVien);
-            system("pause");
-            system("cls");
-            break;
-        case 3: // Xoa sinh vien
-            system("cls");
-            xoa_SinhVien(DanhSach_SinhVien);
-            cout << "Xoa sinh vien" << endl;
-            system("pause");
-            system("cls");
-            break;
-        case 4:
+        case 2:
             return;
-            // default: return;
         }
     }
 }
@@ -182,7 +195,7 @@ void MonHoc_Menu(int &highlight, int option, PTRMH &root, PTRMHTheoTen rootTheoT
             system("cls");
             saoChepCay(root, rootTheoTen);
             cout << "In danh sach mon hoc" << endl;
-            inDanhSachMonHocTheoTenVaoKhung(rootTheoTen, 10, 3);
+            inDanhSachMonHocTheoTen(rootTheoTen);
             _getch();
             system("pause");
             system("cls");
